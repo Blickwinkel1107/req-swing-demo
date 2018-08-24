@@ -8,12 +8,19 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JPasswordField;
 
 public class demoWin {
 
 	private JFrame frame;
 	private JTextField textField_1;
-	private JTextField textField;
+	private JPasswordField passwordField;
+	private String username;
+	private String password;
 
 	/**
 	 * Launch the application.
@@ -55,6 +62,11 @@ public class demoWin {
 		panel.add(lblUsername);
 
 		textField_1 = new JTextField();
+		textField_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				username = textField_1.getText();
+			}
+		});
 		panel.add(textField_1);
 		textField_1.setColumns(10);
 
@@ -65,11 +77,27 @@ public class demoWin {
 		JLabel lblPassword = new JLabel("password:");
 		panel_1.add(lblPassword);
 
-		textField = new JTextField();
-		panel_1.add(textField);
-		textField.setColumns(10);
+		passwordField = new JPasswordField();
+		passwordField.setEchoChar('*');
+		passwordField.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
+			public void actionPerformed(ActionEvent e) {
+				password = passwordField.getText();
+			}
+		});
+		passwordField.setColumns(10);
+		panel_1.add(passwordField);
 
 		JButton btnLogin = new JButton("Login");
+		btnLogin.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				username = textField_1.getText();
+				password = passwordField.getText();
+				System.out.println(username);
+			}
+		});
 		btnLogin.setBounds(155, 139, 117, 29);
 		frame.getContentPane().add(btnLogin);
 	}
