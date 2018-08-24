@@ -72,93 +72,52 @@ public class SelectFiles extends JFrame {
 		setContentPane(contentPane);
 
 		lblEnterRequirementPath = new JLabel("Enter requirement path");
+		lblEnterRequirementPath.setBounds(41, 158, 167, 15);
 
 		textFieldReq = new JTextField();
+		textFieldReq.setBounds(244, 156, 291, 19);
 		textFieldReq.setColumns(10);
 
 		btnReq = new JButton("Files..");
+		btnReq.setBounds(541, 153, 77, 25);
 
 		lblEnterOldVersion = new JLabel("Enter old version path");
+		lblEnterOldVersion.setBounds(46, 198, 157, 15);
 
 		textFieldOldVer = new JTextField();
+		textFieldOldVer.setBounds(244, 196, 291, 19);
 		textFieldOldVer.setColumns(10);
 
 		btnChangeOld = new JButton("Files..");
+		btnChangeOld.setBounds(541, 193, 77, 25);
 
 		lblEnterNewVersion = new JLabel("Enter new version path");
+		lblEnterNewVersion.setBounds(42, 234, 165, 15);
 
 		textFieldNewVer = new JTextField();
+		textFieldNewVer.setBounds(244, 232, 291, 19);
 		textFieldNewVer.setColumns(10);
 
 						btnChangeNew = new JButton("Files..");
+						btnChangeNew.setBounds(541, 229, 77, 25);
 						btnChangeNew.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
 							}
 						});
 
 						JButton btnConfirm = new JButton("Confirm");
-						GroupLayout gl_contentPane = new GroupLayout(contentPane);
-						gl_contentPane.setHorizontalGroup(
-							gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGap(36)
-									.addComponent(lblEnterRequirementPath)
-									.addGap(36)
-									.addComponent(textFieldReq, GroupLayout.PREFERRED_SIZE, 291, GroupLayout.PREFERRED_SIZE)
-									.addGap(6)
-									.addComponent(btnReq))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGap(41)
-									.addComponent(lblEnterOldVersion)
-									.addGap(41)
-									.addComponent(textFieldOldVer, GroupLayout.PREFERRED_SIZE, 291, GroupLayout.PREFERRED_SIZE)
-									.addGap(6)
-									.addComponent(btnChangeOld))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGap(37)
-									.addComponent(lblEnterNewVersion)
-									.addGap(37)
-									.addComponent(textFieldNewVer, GroupLayout.PREFERRED_SIZE, 291, GroupLayout.PREFERRED_SIZE)
-									.addGap(6)
-									.addComponent(btnChangeNew))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGap(340)
-									.addComponent(btnConfirm))
-						);
-						gl_contentPane.setVerticalGroup(
-							gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGap(148)
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_contentPane.createSequentialGroup()
-											.addGap(5)
-											.addComponent(lblEnterRequirementPath))
-										.addGroup(gl_contentPane.createSequentialGroup()
-											.addGap(3)
-											.addComponent(textFieldReq, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-										.addComponent(btnReq))
-									.addGap(15)
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_contentPane.createSequentialGroup()
-											.addGap(5)
-											.addComponent(lblEnterOldVersion))
-										.addGroup(gl_contentPane.createSequentialGroup()
-											.addGap(3)
-											.addComponent(textFieldOldVer, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-										.addComponent(btnChangeOld))
-									.addGap(11)
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_contentPane.createSequentialGroup()
-											.addGap(5)
-											.addComponent(lblEnterNewVersion))
-										.addGroup(gl_contentPane.createSequentialGroup()
-											.addGap(3)
-											.addComponent(textFieldNewVer, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-										.addComponent(btnChangeNew))
-									.addGap(38)
-									.addComponent(btnConfirm))
-						);
-						contentPane.setLayout(gl_contentPane);
+						btnConfirm.setBounds(345, 292, 88, 25);
+						contentPane.setLayout(null);
+						contentPane.add(lblEnterRequirementPath);
+						contentPane.add(textFieldReq);
+						contentPane.add(btnReq);
+						contentPane.add(lblEnterOldVersion);
+						contentPane.add(textFieldOldVer);
+						contentPane.add(btnChangeOld);
+						contentPane.add(lblEnterNewVersion);
+						contentPane.add(textFieldNewVer);
+						contentPane.add(btnChangeNew);
+						contentPane.add(btnConfirm);
 	}
 
 	private static void addPopup(Component component, final JPopupMenu popup) {
