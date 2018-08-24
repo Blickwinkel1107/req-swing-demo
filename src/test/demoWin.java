@@ -64,7 +64,7 @@ public class demoWin {
 		textField_1 = new JTextField();
 		textField_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				username = textField_1.getText();
+				//username = textField_1.getText();
 			}
 		});
 		panel.add(textField_1);
@@ -82,7 +82,7 @@ public class demoWin {
 		passwordField.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-				password = passwordField.getText();
+				//password = passwordField.getText();
 			}
 		});
 		passwordField.setColumns(10);
