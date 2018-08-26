@@ -1,48 +1,20 @@
 package test;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.BoxLayout;
-import java.awt.GridBagLayout;
-import javax.swing.JTextField;
 import javax.swing.JButton;
-import java.awt.FlowLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import java.awt.CardLayout;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-import com.jgoodies.forms.layout.RowSpec;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.JToggleButton;
-import java.awt.Button;
-import javax.swing.JPopupMenu;
-import java.awt.Component;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
-import java.awt.Window.Type;
 
-public class SelectFiles extends JFrame {
+public class SelectFiles {
 
-	private JPanel contentPane;
-	private JTextField textFieldReq;
-	private JTextField textFieldOldVer;
-	private JTextField textFieldNewVer;
-	private JButton btnChangeNew;
-	private JButton btnChangeOld;
-	private JButton btnReq;
-	private JLabel lblEnterNewVersion;
-	private JLabel lblEnterOldVersion;
-	private JLabel lblEnterRequirementPath;
+	private JFrame frmSelectFilesPath;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
 
 	/**
 	 * Launch the application.
@@ -51,8 +23,8 @@ public class SelectFiles extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SelectFiles frame = new SelectFiles();
-					frame.setVisible(true);
+					SelectFiles window = new SelectFiles();
+					window.frmSelectFilesPath.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -61,80 +33,71 @@ public class SelectFiles extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the application.
 	 */
 	public SelectFiles() {
-		setTitle("Select Files Path");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 653, 449);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-
-		lblEnterRequirementPath = new JLabel("Enter requirement path");
-		lblEnterRequirementPath.setBounds(41, 158, 167, 15);
-
-		textFieldReq = new JTextField();
-		textFieldReq.setBounds(244, 156, 291, 19);
-		textFieldReq.setColumns(10);
-
-		btnReq = new JButton("Files..");
-		btnReq.setBounds(541, 153, 77, 25);
-
-		lblEnterOldVersion = new JLabel("Enter old version path");
-		lblEnterOldVersion.setBounds(46, 198, 157, 15);
-
-		textFieldOldVer = new JTextField();
-		textFieldOldVer.setBounds(244, 196, 291, 19);
-		textFieldOldVer.setColumns(10);
-
-		btnChangeOld = new JButton("Files..");
-		btnChangeOld.setBounds(541, 193, 77, 25);
-
-		lblEnterNewVersion = new JLabel("Enter new version path");
-		lblEnterNewVersion.setBounds(42, 234, 165, 15);
-
-		textFieldNewVer = new JTextField();
-		textFieldNewVer.setBounds(244, 232, 291, 19);
-		textFieldNewVer.setColumns(10);
-
-						btnChangeNew = new JButton("Files..");
-						btnChangeNew.setBounds(541, 229, 77, 25);
-						btnChangeNew.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-							}
-						});
-
-						JButton btnConfirm = new JButton("Confirm");
-						btnConfirm.setBounds(345, 292, 88, 25);
-						contentPane.setLayout(null);
-						contentPane.add(lblEnterRequirementPath);
-						contentPane.add(textFieldReq);
-						contentPane.add(btnReq);
-						contentPane.add(lblEnterOldVersion);
-						contentPane.add(textFieldOldVer);
-						contentPane.add(btnChangeOld);
-						contentPane.add(lblEnterNewVersion);
-						contentPane.add(textFieldNewVer);
-						contentPane.add(btnChangeNew);
-						contentPane.add(btnConfirm);
+		initialize();
 	}
 
-	private static void addPopup(Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			private void showMenu(MouseEvent e) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmSelectFilesPath = new JFrame();
+		frmSelectFilesPath.setTitle("Select files path");
+		frmSelectFilesPath.setBounds(100, 100, 655, 442);
+		frmSelectFilesPath.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmSelectFilesPath.getContentPane().setLayout(null);
+
+		JButton btnConfirm = new JButton("Confirm");
+		btnConfirm.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//frmSelectFilesPath.setVisible(false);
+				frmSelectFilesPath.dispose();
 			}
 		});
+		btnConfirm.setBounds(269, 336, 117, 25);
+		frmSelectFilesPath.getContentPane().add(btnConfirm);
+
+		textField = new JTextField();
+		textField.setBounds(118, 99, 390, 19);
+		frmSelectFilesPath.getContentPane().add(textField);
+		textField.setColumns(10);
+
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(118, 145, 390, 19);
+		frmSelectFilesPath.getContentPane().add(textField_1);
+
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		textField_2.setBounds(118, 186, 390, 19);
+		frmSelectFilesPath.getContentPane().add(textField_2);
+
+		JLabel lblOldVersion = new JLabel("Old version");
+		lblOldVersion.setBounds(12, 94, 100, 29);
+		frmSelectFilesPath.getContentPane().add(lblOldVersion);
+
+		JLabel lblNewVersion = new JLabel("New version");
+		lblNewVersion.setBounds(12, 135, 100, 29);
+		frmSelectFilesPath.getContentPane().add(lblNewVersion);
+
+		JLabel lblRequirement = new JLabel("Requirement");
+		lblRequirement.setBounds(12, 181, 100, 29);
+		frmSelectFilesPath.getContentPane().add(lblRequirement);
+
+		JButton btnSelect = new JButton("Select..");
+		btnSelect.setBounds(519, 183, 106, 25);
+		frmSelectFilesPath.getContentPane().add(btnSelect);
+
+		JButton button = new JButton("Select..");
+		button.setBounds(519, 142, 106, 25);
+		frmSelectFilesPath.getContentPane().add(button);
+
+		JButton button_1 = new JButton("Select..");
+		button_1.setBounds(519, 96, 106, 25);
+		frmSelectFilesPath.getContentPane().add(button_1);
+		frmSelectFilesPath.setVisible(true);	//显示窗口
 	}
 }
