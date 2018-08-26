@@ -2,8 +2,10 @@ package retro;
 
 import edu.nju.cs.inform.core.diff.*;
 import edu.nju.cs.inform.core.type.*;
+import edu.nju.cs.inform.core.recommend.*;
 import edu.nju.cs.inform.io.*;
 import edu.nju.cs.inform.core.ir.*;
+
 import java.util.*;
 
 /**
@@ -20,8 +22,8 @@ public class Retro {
 	
 	//单元测试入口
 	public static void main(String[] args) {
-		String new_source_path = "data/sample/AquaLush_Change3";
-		String old_source_path = "data/sample/AquaLush_Change4";
+		String new_source_path = "data/sample/AquaLush_Change4";
+		String old_source_path = "data/sample/AquaLush_Change3";
 		String requirement_Path = "data/sample/AquaLush_Requirement";
 		Retro.listComparer(new_source_path, old_source_path, requirement_Path);
 	}
@@ -29,15 +31,16 @@ public class Retro {
 	//变更域算法
 	public static void listComparer(String new_source_path, String old_source_path, String requirement_Path) {
         CodeElementsComparer comparer;
-        System.out.println("-----------------Code Elements Diff-----------------");
+        System.out.println("-----------------Change Regions-----------------");
         comparer = new CodeElementsComparer(new_source_path, old_source_path);
         comparer.diff();
         Set<CodeElementChange> codeElementChangeList = comparer.getCodeElementChangesList();
+        System.out.println("-----------------Code Elements Diff-----------------");
         for (CodeElementChange elementChange : codeElementChangeList) {
             System.out.println(elementChange.getElementName() + " " + elementChange.getElementType() + " " + elementChange.getChangeType());
         }
-
-        System.out.println("-----------------Top10 Requirement Elements-----------------");
+        int reqDisplayNum = 100;
+        System.out.println("-----------------Top" + reqDisplayNum + " Requirement Elements-----------------");
 
         // get change description from code changes
         ArtifactsCollection changeDescriptionCollection = comparer.getChangeDescriptionCollection();
@@ -46,6 +49,9 @@ public class Retro {
         // retrieval change description to requirement
         Retrieval retrieval = new Retrieval(changeDescriptionCollection, requirementCollection, IRModelConst.VSM);
         retrieval.tracing();
+        final SimilarityMatrix similarityMatrix = retrieval.getSimilarityMatrix();
+        final MethodRecommendation methodRecommendation = new MethodRecommendation(comparer, requirementCollection, similarityMatrix);
+        final Map<String, java.util.List<String>> recommendMethodsForRequirements = methodRecommendation.getRecommendMethodsForRequirements();
 
         Map<String, Double> candidatedOutdatedRequirementsRank = retrieval.getCandidateOutdatedRequirementsRank();
         //将map转换成list
@@ -60,7 +66,7 @@ public class Retro {
 
         int index = 0;
         for (Map.Entry<String, Double> map : list) {
-            if(index < 10) {
+            if(index < reqDisplayNum) {
                 System.out.println(map.getKey() + "  " + String.valueOf(map.getValue()));
                 index++;
             }
@@ -68,5 +74,24 @@ public class Retro {
                 break;
             }
         }
+        
+        
+        System.out.println("-----------------根据需求文本进行函数推荐-----------------");
+        //往表格中添加行
+        //获取到requirementElementsTable中被点击的一行的id--eg:SRS358
+        
+        System.out.print("输入需求文本编号(格式：SRSxxx)：");
+        Scanner scan = new Scanner(System.in);
+        String req = scan.nextLine();
+        System.out.println("需求文本：" + req);
+        
+        System.out.println("-----------------methods recommendation-----------------");
+        
+        List<String> recommendList = recommendMethodsForRequirements.get(req);
+        index = 0;
+        for (String method : recommendList) {
+            System.out.println(index + ": " + method);
+            ++index;
+       }
     }
 }
