@@ -14,6 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import retro.Retro;
+
 public class MaintainerWin {
 
 	public static void makeFace(JTable table) {
@@ -49,6 +51,8 @@ public class MaintainerWin {
 	private String path_old;
 	private String path_new;
 	private String path_req;
+	
+	public Retro retro;
 
 	protected void setPath_old(String path_old){
 		this.path_old = path_old;
@@ -60,6 +64,10 @@ public class MaintainerWin {
 
 	protected void setPath_req(String path_req){
 		this.path_req = path_req;
+	}
+	
+	protected void setRetro(Retro retro){
+		this.retro = retro;
 	}
 
 	/**

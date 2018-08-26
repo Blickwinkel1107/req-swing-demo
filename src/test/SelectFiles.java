@@ -6,19 +6,24 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.JLabel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.InvocationTargetException;
 
 import test.MaintainerWin;
 import test.ManagerWin;
 
+import retro.Retro;
+import test.RetrievingDialog;
+
 public class SelectFiles {
 
 	private JFrame frmSelectFilesPath;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField textOldVersion;
+	private JTextField textNewVersion;
+	private JTextField textReq;
 	/*
 	 * modified by YHR
 	 */
@@ -64,6 +69,9 @@ public class SelectFiles {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		//RetrievingDialog retriever = new RetrievingDialog();
+		//retriever.hide();
+		//retriever.show();
 		//System.out.println(this.username);
 		//System.out.println(this.password);
 		frmSelectFilesPath = new JFrame();
@@ -72,50 +80,22 @@ public class SelectFiles {
 		frmSelectFilesPath.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSelectFilesPath.getContentPane().setLayout(null);
 
-		JButton btnConfirm = new JButton("Confirm");
-		btnConfirm.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				//frmSelectFilesPath.setVisible(false);
-				/*
-				 * modified by YHR
-				 */
-				System.out.println(username);
-				System.out.println(password);
-				if (username.equals(MAINTAINER) == true){
-					System.out.println("fuck");
-					MaintainerWin maintainer = new MaintainerWin();
-					System.out.println("fuck");
-					maintainer.setPath_old(path_old);
-					maintainer.setPath_new(path_new);
-					maintainer.setPath_req(path_req);
-				}
-				else if (username.equals(MANAGER) == true){
-					ManagerWin manager = new ManagerWin();
-					manager.setPath_old(path_old);
-					manager.setPath_new(path_new);
-					manager.setPath_req(path_req);
-				}
-				frmSelectFilesPath.dispose();
-			}
-		});
-		btnConfirm.setBounds(269, 336, 117, 25);
-		frmSelectFilesPath.getContentPane().add(btnConfirm);
+		
 
-		textField = new JTextField();
-		textField.setBounds(118, 99, 390, 19);
-		frmSelectFilesPath.getContentPane().add(textField);
-		textField.setColumns(10);
+		textOldVersion = new JTextField();
+		textOldVersion.setBounds(118, 99, 390, 19);
+		frmSelectFilesPath.getContentPane().add(textOldVersion);
+		textOldVersion.setColumns(10);
 
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(118, 145, 390, 19);
-		frmSelectFilesPath.getContentPane().add(textField_1);
+		textNewVersion = new JTextField();
+		textNewVersion.setColumns(10);
+		textNewVersion.setBounds(118, 145, 390, 19);
+		frmSelectFilesPath.getContentPane().add(textNewVersion);
 
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(118, 186, 390, 19);
-		frmSelectFilesPath.getContentPane().add(textField_2);
+		textReq = new JTextField();
+		textReq.setColumns(10);
+		textReq.setBounds(118, 186, 390, 19);
+		frmSelectFilesPath.getContentPane().add(textReq);
 
 		JLabel lblOldVersion = new JLabel("Old version");
 		lblOldVersion.setBounds(12, 94, 100, 29);
@@ -128,7 +108,76 @@ public class SelectFiles {
 		JLabel lblRequirement = new JLabel("Requirement");
 		lblRequirement.setBounds(12, 181, 100, 29);
 		frmSelectFilesPath.getContentPane().add(lblRequirement);
+		
+		JLabel lblStartProgress = new JLabel("Retrieving Requirements ...");
+		lblStartProgress.setVisible(false);
+		lblStartProgress.setBounds(253, 311, 162, 15);
 
+		JButton btnConfirm = new JButton("Confirm");
+		btnConfirm.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//retriever.show();
+				//frmSelectFilesPath.setVisible(false);
+				/*
+				 * modified by YHR
+				 */
+				if(e.getButton() == 3) {
+					lblStartProgress.setVisible(true);
+					return;
+				}
+				lblStartProgress.setVisible(true);
+				System.out.println(username);
+				System.out.println(password);
+				if (username.equals(MAINTAINER) == true){
+					//System.out.println("fuck");
+					//yx: he xin dai ma :-)
+					System.out.println("enter MaintainerWin");
+					//frmSelectFilesPath.setVisible(false);
+					String oldVerPath;
+					String newVerPath;
+					String reqPath;
+					if(textOldVersion.getText().equals("")) {
+						oldVerPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change3";
+						newVerPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change4";
+						reqPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Requirement";
+					}
+					else {
+						oldVerPath = textOldVersion.getText();
+						newVerPath = textNewVersion.getText();
+						reqPath = textReq.getText();
+					}
+					
+					Retro re = new Retro();
+					SwingUtilities.invokeLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							re.processTest(oldVerPath, newVerPath, reqPath);
+						}
+					});
+					//re.process();
+					
+					MaintainerWin maintainer = new MaintainerWin();
+					maintainer.setRetro(re);
+					//retriever.close();
+					frmSelectFilesPath.dispose();
+					
+				}
+				else if (username.equals(MANAGER) == true){
+					ManagerWin manager = new ManagerWin();
+					System.out.println("enter ManagerWin");
+					manager.setPath_old(path_old);
+					manager.setPath_new(path_new);
+					manager.setPath_req(path_req);
+				}
+				frmSelectFilesPath.dispose();
+			}
+		});
+		btnConfirm.setBounds(269, 336, 117, 25);
+		frmSelectFilesPath.getContentPane().add(btnConfirm);
+		
 		JButton btnSelect = new JButton("Select..");
 		btnSelect.addMouseListener(new MouseAdapter() {
 			@Override
@@ -140,9 +189,9 @@ public class SelectFiles {
 				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				int returnVal = fileChooser.showOpenDialog(fileChooser);
 				if(returnVal == JFileChooser.APPROVE_OPTION){
-				path_req = fileChooser.getSelectedFile().getAbsolutePath();//这个就是你选择的文件夹的路径
+				path_req = fileChooser.getSelectedFile().getAbsolutePath();//杩欎釜灏辨槸浣犻�夋嫨鐨勬枃浠跺す鐨勮矾寰�
 				System.out.println(path_req);
-				textField_2.setText(path_req);
+				textReq.setText(path_req);
 				}
 			}
 			});
@@ -161,9 +210,9 @@ public class SelectFiles {
 				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				int returnVal = fileChooser.showOpenDialog(fileChooser);
 				if(returnVal == JFileChooser.APPROVE_OPTION){
-				path_new = fileChooser.getSelectedFile().getAbsolutePath();//这个就是你选择的文件夹的路径
+				path_new = fileChooser.getSelectedFile().getAbsolutePath();//杩欎釜灏辨槸浣犻�夋嫨鐨勬枃浠跺す鐨勮矾寰�
 				System.out.println(path_new);
-				textField_1.setText(path_new);
+				textNewVersion.setText(path_new);
 				}
 			}
 		});
@@ -181,14 +230,29 @@ public class SelectFiles {
 				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				int returnVal = fileChooser.showOpenDialog(fileChooser);
 				if(returnVal == JFileChooser.APPROVE_OPTION){
-				path_old = fileChooser.getSelectedFile().getAbsolutePath();//这个就是你选择的文件夹的路径
-				System.out.println(path_old);
+					path_old = fileChooser.getSelectedFile().getAbsolutePath();//杩欎釜灏辨槸浣犻�夋嫨鐨勬枃浠跺す鐨勮矾寰�
+					System.out.println(path_old);
 				}
-				textField.setText(path_old);
+				textOldVersion.setText(path_old);
 			}
 		});
 		button_1.setBounds(519, 96, 106, 25);
 		frmSelectFilesPath.getContentPane().add(button_1);
-		frmSelectFilesPath.setVisible(true);	//显示窗口
+		
+		
+		frmSelectFilesPath.getContentPane().add(lblStartProgress);
+		frmSelectFilesPath.setVisible(true);	//鏄剧ず绐楀彛
+	}
+	
+	protected void setPath_old(String path_old){
+		this.path_old = path_old;
+	}
+
+	protected void setPath_new(String path_new){
+		this.path_new = path_new;
+	}
+
+	protected void setPath_req(String path_req){
+		this.path_req = path_req;
 	}
 }
