@@ -19,6 +19,25 @@ public class ManagerWin {
 	private JTable table_1;
 	private MaintainerWin m;
 
+	/*
+	 * modified by YHR
+	 */
+	private String path_old;
+	private String path_new;
+	private String path_req;
+
+	protected void setPath_old(String path_old){
+		this.path_old = path_old;
+	}
+
+	protected void setPath_new(String path_new){
+		this.path_new = path_new;
+	}
+
+	protected void setPath_req(String path_req){
+		this.path_req = path_req;
+	}
+
 	/**
 	 * Launch the application.
 	 */
