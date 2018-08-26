@@ -154,5 +154,6 @@ public class ManagerWin {
 
 		JButton btnSave = new JButton("Save");
 		panel_5.add(btnSave);
+		frame.setVisible(true);
 	}
 }

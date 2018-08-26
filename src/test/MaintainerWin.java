@@ -23,9 +23,9 @@ public class MaintainerWin {
 		       Object value, boolean isSelected, boolean hasFocus,
 		       int row, int column) {
 		      if (row % 2 == 0)
-		       setBackground(Color.white); // 设置奇数行底色
+		       setBackground(Color.white); // 璁剧疆濂囨暟琛屽簳鑹�
 		      else if (row % 2 == 1)
-		       setBackground(new Color(206, 231, 255)); // 设置偶数行底色
+		       setBackground(new Color(206, 231, 255)); // 璁剧疆鍋舵暟琛屽簳鑹�
 		      return super.getTableCellRendererComponent(table, value,
 		        isSelected, hasFocus, row, column);
 		     }
@@ -157,7 +157,7 @@ public class MaintainerWin {
 		frame.getContentPane().add(scrollPane);
 
 		Object[][] playerInfo = {
-	            // 创建表格中的数据
+	            // 鍒涘缓琛ㄦ牸涓殑鏁版嵁
 	            { "", "", "", ""},
 	            { "", "", "", ""},
 	            { "", "", "", ""},
@@ -185,5 +185,6 @@ public class MaintainerWin {
 		table_3 = new JTable(playerInfo, names_3);
 		makeFace(table_3);
 		scrollPane_2.setViewportView(table_3);
+		frame.setVisible(true);
 	}
 }
