@@ -4,10 +4,14 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import test.MaintainerWin;
+import test.ManagerWin;
 
 public class SelectFiles {
 
@@ -15,7 +19,24 @@ public class SelectFiles {
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
+	/*
+	 * modified by YHR
+	 */
+	private String path_old;
+	private String path_new;
+	private String path_req;
+	private String username;
+	private char[] password;
+	private static String MAINTAINER = "maintainer";
+	private static String MANAGER = "manager";
 
+	public void setUsername(String username){
+		this.username = username;
+	}
+
+	public void setPassword(char[] password){
+		this.password = password;
+	}
 	/**
 	 * Launch the application.
 	 */
@@ -43,6 +64,8 @@ public class SelectFiles {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		//System.out.println(this.username);
+		//System.out.println(this.password);
 		frmSelectFilesPath = new JFrame();
 		frmSelectFilesPath.setTitle("Select files path");
 		frmSelectFilesPath.setBounds(100, 100, 655, 442);
@@ -54,6 +77,25 @@ public class SelectFiles {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//frmSelectFilesPath.setVisible(false);
+				/*
+				 * modified by YHR
+				 */
+				System.out.println(username);
+				System.out.println(password);
+				if (username.equals(MAINTAINER) == true){
+					System.out.println("fuck");
+					MaintainerWin maintainer = new MaintainerWin();
+					System.out.println("fuck");
+					maintainer.setPath_old(path_old);
+					maintainer.setPath_new(path_new);
+					maintainer.setPath_req(path_req);
+				}
+				else if (username.equals(MANAGER) == true){
+					ManagerWin manager = new ManagerWin();
+					manager.setPath_old(path_old);
+					manager.setPath_new(path_new);
+					manager.setPath_req(path_req);
+				}
 				frmSelectFilesPath.dispose();
 			}
 		});
@@ -88,14 +130,63 @@ public class SelectFiles {
 		frmSelectFilesPath.getContentPane().add(lblRequirement);
 
 		JButton btnSelect = new JButton("Select..");
+		btnSelect.addMouseListener(new MouseAdapter() {
+			@Override
+			/*
+			 * modified by YHR
+			 */
+			public void mouseClicked(MouseEvent e) {
+				JFileChooser fileChooser = new JFileChooser("/Users/mac/Desktop");
+				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				int returnVal = fileChooser.showOpenDialog(fileChooser);
+				if(returnVal == JFileChooser.APPROVE_OPTION){
+				path_req = fileChooser.getSelectedFile().getAbsolutePath();//这个就是你选择的文件夹的路径
+				System.out.println(path_req);
+				textField_2.setText(path_req);
+				}
+			}
+			});
+
 		btnSelect.setBounds(519, 183, 106, 25);
 		frmSelectFilesPath.getContentPane().add(btnSelect);
 
 		JButton button = new JButton("Select..");
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			/*
+			 * modified by YHR
+			 */
+			public void mouseClicked(MouseEvent e) {
+				JFileChooser fileChooser = new JFileChooser("/Users/mac/Desktop");
+				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				int returnVal = fileChooser.showOpenDialog(fileChooser);
+				if(returnVal == JFileChooser.APPROVE_OPTION){
+				path_new = fileChooser.getSelectedFile().getAbsolutePath();//这个就是你选择的文件夹的路径
+				System.out.println(path_new);
+				textField_1.setText(path_new);
+				}
+			}
+		});
 		button.setBounds(519, 142, 106, 25);
 		frmSelectFilesPath.getContentPane().add(button);
 
 		JButton button_1 = new JButton("Select..");
+		button_1.addMouseListener(new MouseAdapter() {
+			@Override
+			/*
+			 * modified by YHR
+			 */
+			public void mouseClicked(MouseEvent e) {
+				JFileChooser fileChooser = new JFileChooser("/Users/mac/Desktop");
+				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				int returnVal = fileChooser.showOpenDialog(fileChooser);
+				if(returnVal == JFileChooser.APPROVE_OPTION){
+				path_old = fileChooser.getSelectedFile().getAbsolutePath();//这个就是你选择的文件夹的路径
+				System.out.println(path_old);
+				}
+				textField.setText(path_old);
+			}
+		});
 		button_1.setBounds(519, 96, 106, 25);
 		frmSelectFilesPath.getContentPane().add(button_1);
 		frmSelectFilesPath.setVisible(true);	//显示窗口

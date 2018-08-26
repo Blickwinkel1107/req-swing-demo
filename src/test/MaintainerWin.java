@@ -17,7 +17,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class MaintainerWin {
 
 	public static void makeFace(JTable table) {
-
 		   try {
 		    DefaultTableCellRenderer tcr = new DefaultTableCellRenderer() {
 		     public Component getTableCellRendererComponent(JTable table,
@@ -37,13 +36,31 @@ public class MaintainerWin {
 		   } catch (Exception ex) {
 		    ex.printStackTrace();
 		   }
-
 		}
 
 	private JFrame frame;
 	private JTable table_1;
 	private JTable table_2;
 	private JTable table_3;
+
+	/*
+	 * modified by YHR
+	 */
+	private String path_old;
+	private String path_new;
+	private String path_req;
+
+	protected void setPath_old(String path_old){
+		this.path_old = path_old;
+	}
+
+	protected void setPath_new(String path_new){
+		this.path_new = path_new;
+	}
+
+	protected void setPath_req(String path_req){
+		this.path_req = path_req;
+	}
 
 	/**
 	 * Launch the application.

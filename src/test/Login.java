@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -13,6 +12,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
+
+import test.SelectFiles;
 
 public class Login {
 
@@ -98,7 +99,12 @@ public class Login {
 				System.out.println(username);
 				System.out.println(password);
 				//MaintainerWin window = new MaintainerWin();
-				new SelectFiles();
+				SelectFiles selectFiles = new SelectFiles();
+				/*
+				 modified by YHR
+				 */
+				selectFiles.setUsername(username);
+				selectFiles.setPassword(password);
 				//frame.setVisible(false);
 				frame.dispose();
 			}
