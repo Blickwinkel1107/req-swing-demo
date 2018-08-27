@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="edu/nju/cs/inform/jgit/|edu/nju/cs/inform/test/" kind="src" path="src"/>
+	<classpathentry excluding="edu/nju/cs/inform/gui/|edu/nju/cs/inform/jgit/|edu/nju/cs/inform/test/" kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/collections-generic-4.01.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-2.6.jar"/>
@@ -34,7 +34,6 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.ui_3.7.0.I20110602-0100.jar"/>
 	<classpathentry kind="lib" path="lib/sqlite-jdbc-3.8.5-pre1.jar"/>
 	<classpathentry kind="lib" path="lib/stanford-corenlp-3.4.1.jar"/>
-	<classpathentry kind="lib" path="lib/swt.jar"/>
 	<classpathentry kind="lib" path="lib/zip4j_1.3.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

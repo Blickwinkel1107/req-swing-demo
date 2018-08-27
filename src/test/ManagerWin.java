@@ -11,6 +11,8 @@ import javax.swing.JTextArea;
 import javax.swing.JButton;
 
 import test.MaintainerWin;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ManagerWin {
 
@@ -90,6 +92,23 @@ public class ManagerWin {
 	            { "", "", "", ""}};
 		String[] names_1 = { "No", "Id", "Status", "Pending"};
 		table = new JTable(playerInfo, names_1);
+		table.addMouseListener(new MouseAdapter() {
+			/*
+			 modified by YHR
+			 表格接收鼠标左、右键点击事件
+			 */
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1){
+					//LEFT MOUSE CLICKED
+					int tableRow = table.rowAtPoint(e.getPoint());
+					System.out.print(tableRow);
+				}
+				if(e.getButton() == MouseEvent.BUTTON3) {
+					//RIGHT MOUSE CLICKED
+				}
+			}	
+		});
 		m.makeFace(table);
 		scrollPane.setViewportView(table);
 
@@ -106,6 +125,23 @@ public class ManagerWin {
 
 		String[] names_2 = { "No", "CommitId", "Author"};
 		table_1 = new JTable(playerInfo, names_2);
+		table_1.addMouseListener(new MouseAdapter() {
+			/*
+			 modified by YHR
+			 表格接收鼠标左、右键点击事件
+			 */
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1){
+					//LEFT MOUSE CLICKED
+					int tableRow = table_1.rowAtPoint(e.getPoint());
+					System.out.print(tableRow);
+				}
+				if(e.getButton() == MouseEvent.BUTTON3) {
+					//RIGHT MOUSE CLICKED
+				}
+			}	
+		});
 		m.makeFace(table_1);
 		scrollPane_1.setViewportView(table_1);
 

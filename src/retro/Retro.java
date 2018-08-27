@@ -10,19 +10,19 @@ import java.util.*;
 
 /**
  * created by yx 2018/8/26
- * ´´ÐÂÏîÄ¿demo
- * RetroËã·¨²âÊÔÎÄ¼þ
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿demo
+ * Retroï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
  */
 
 public class Retro {
-	
+
 	public String new_source_path;
 	public String old_source_path;
 	public String requirement_Path;
 	public Set<CodeElementChange> codeElementChangeList;
 	public List<Map.Entry<String, Double>> reqElementList;
 	public Map<String, List<String>> recommendMethodsForRequirements;
-	
+
 	public void process(String new_source_path, String old_source_path, String requirement_Path) {
 		CodeElementsComparer comparer;
         comparer = new CodeElementsComparer(new_source_path, old_source_path);
@@ -42,38 +42,38 @@ public class Retro {
         this.recommendMethodsForRequirements = recommendMethodsForRequirements;
 
         Map<String, Double> candidatedOutdatedRequirementsRank = retrieval.getCandidateOutdatedRequirementsRank();
-        //½«map×ª»»³Élist
+        //ï¿½ï¿½map×ªï¿½ï¿½ï¿½ï¿½list
         List<Map.Entry<String, Double>> list = new ArrayList<>(candidatedOutdatedRequirementsRank.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<String, Double>>() {
             @Override
-            //½µÐòÅÅÁÐ
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
                 return o2.getValue().compareTo(o1.getValue());
             }
         });
         this.reqElementList = list;
 	}
-	
-	
-	//µ¥Ôª²âÊÔÈë¿Ú
+
+
+	//ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public static void main(String[] args) {
-		String old_source_path = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change3";
-		String new_source_path = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change4";
-		String requirement_Path = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Requirement";
+		String old_source_path = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Change3";
+		String new_source_path = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Change4";
+		String requirement_Path = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Requirement";
 		Retro re = new Retro();
 		re.processTest(new_source_path, old_source_path, requirement_Path);
-		System.out.println("-----------------¸ù¾ÝÐèÇóÎÄ±¾½øÐÐº¯ÊýÍÆ¼ö-----------------");
-        //Íù±í¸ñÖÐÌí¼ÓÐÐ
-        //»ñÈ¡µ½requirementElementsTableÖÐ±»µã»÷µÄÒ»ÐÐµÄid--eg:SRS358
+		System.out.println("-----------------ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½Ðºï¿½ï¿½ï¿½ï¿½Æ¼ï¿½-----------------");
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        //ï¿½ï¿½È¡ï¿½ï¿½requirementElementsTableï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Ðµï¿½id--eg:SRS358
 		String req = null;
 		do {
-	        System.out.print("ÊäÈëÐèÇóÎÄ±¾±àºÅ(¸ñÊ½£ºSRSxxx)£¬ÊäÈëqÍË³ö£º");
+	        System.out.print("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½Ê½ï¿½ï¿½SRSxxx)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½qï¿½Ë³ï¿½ï¿½ï¿½");
 	        Scanner scan = new Scanner(System.in);
 	        req = scan.nextLine();
-	        System.out.println("ÐèÇóÎÄ±¾£º" + req);
-	        
+	        System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½" + req);
+
 	        System.out.println("-----------------methods recommendation-----------------");
-	        
+
 	        	List<String> recommendList = re.recommendMethodsForRequirements.get(req);
 	            int index = 1;
 	            for (String method : recommendList) {
@@ -82,8 +82,8 @@ public class Retro {
 	           }
         }while(req != "q");
 	}
-	
-	//±ä¸üÓòËã·¨
+
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã·¨
 	public void processTest(String new_source_path, String old_source_path, String requirement_Path) {
         CodeElementsComparer comparer;
         System.out.println("-----------------Change Regions-----------------");
@@ -111,11 +111,11 @@ public class Retro {
         this.recommendMethodsForRequirements = recommendMethodsForRequirements;
 
         Map<String, Double> candidatedOutdatedRequirementsRank = retrieval.getCandidateOutdatedRequirementsRank();
-        //½«map×ª»»³Élist
+        //ï¿½ï¿½map×ªï¿½ï¿½ï¿½ï¿½list
         List<Map.Entry<String, Double>> list = new ArrayList<>(candidatedOutdatedRequirementsRank.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<String, Double>>() {
             @Override
-            //½µÐòÅÅÁÐ
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
                 return o2.getValue().compareTo(o1.getValue());
             }

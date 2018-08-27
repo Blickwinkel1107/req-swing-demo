@@ -19,6 +19,8 @@ import retro.Retro;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Map;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MaintainerWin {
 
@@ -184,6 +186,23 @@ public class MaintainerWin {
 			codeElementsList[i] = data.get(i);
 		}
 		tblCodeElementsList = new JTable(codeElementsList, codeColumns);
+		tblCodeElementsList.addMouseListener(new MouseAdapter() {
+			/*
+			 modified by YHR
+			 表格接收鼠标左、右键点击事件
+			 */
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1){
+					//LEFT MOUSE CLICKED
+					int tableRow = tblCodeElementsList.rowAtPoint(e.getPoint());
+					System.out.print(tableRow);
+				}
+				if(e.getButton() == MouseEvent.BUTTON3) {
+					//RIGHT MOUSE CLICKED
+				}
+			}	
+		});
 		makeFace(tblCodeElementsList);
 		scrollPane.setViewportView(tblCodeElementsList);
 
@@ -209,6 +228,23 @@ public class MaintainerWin {
 			reqElementsList[i] = data.get(i);
 		}
 		tblReqElementsList = new JTable(reqElementsList, reqColumn);
+		tblReqElementsList.addMouseListener(new MouseAdapter() {
+			/*
+			 modified by YHR
+			 表格接收鼠标左、右键点击事件
+			 */
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1){
+					//LEFT MOUSE CLICKED
+					int tableRow = tblReqElementsList.rowAtPoint(e.getPoint());
+					System.out.print(tableRow);
+				}
+				if(e.getButton() == MouseEvent.BUTTON3) {
+					//RIGHT MOUSE CLICKED
+				}
+			}	
+		});
 		makeFace(tblReqElementsList);
 		scrollPane_1.setViewportView(tblReqElementsList);
 
@@ -218,6 +254,23 @@ public class MaintainerWin {
 
 		String[] names_3 = {"No", "Id"};
 		table_3 = new JTable(new Object[][]{}, names_3);
+		table_3.addMouseListener(new MouseAdapter() {
+			/*
+			 modified by YHR
+			 表格接收鼠标左、右键点击事件
+			 */
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1){
+					//LEFT MOUSE CLICKED
+					int tableRow = table_3.rowAtPoint(e.getPoint());
+					System.out.print(tableRow);
+				}
+				if(e.getButton() == MouseEvent.BUTTON3) {
+					//RIGHT MOUSE CLICKED
+				}
+			}	
+		});
 		makeFace(table_3);
 		scrollPane_2.setViewportView(table_3);
 		frmRequirementsUpdate.setVisible(true);

@@ -77,7 +77,7 @@ public class SelectFiles {
 		frmSelectFilesPath.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSelectFilesPath.getContentPane().setLayout(null);
 
-		
+
 
 		textOldVersion = new JTextField();
 		textOldVersion.setBounds(118, 99, 390, 19);
@@ -126,25 +126,25 @@ public class SelectFiles {
 					String newVerPath;
 					String reqPath;
 					if(textOldVersion.getText().equals("")) {
-						oldVerPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change3";
-						newVerPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change4";
-						reqPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Requirement";
+						oldVerPath = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Change3";
+						newVerPath = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Change4";
+						reqPath = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Requirement";
 					}
 					else {
 						oldVerPath = textOldVersion.getText();
 						newVerPath = textNewVersion.getText();
 						reqPath = textReq.getText();
 					}
-					
+
 					Retro re = new Retro();
-					
+
 					//re.process();
 					re.processTest(newVerPath, oldVerPath, reqPath);
-					
+
 					new MaintainerWin(re);
 					//retriever.close();
 					frmSelectFilesPath.dispose();
-					
+
 				}
 				else if (username.equals(MANAGER) == true){
 					ManagerWin manager = new ManagerWin();
@@ -155,13 +155,13 @@ public class SelectFiles {
 				}
 				frmSelectFilesPath.dispose();
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				btnConfirm.setText("Retrieving requirements ...");
 			}
-			
-			
+
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				btnConfirm.setText("Confirm");
@@ -169,7 +169,7 @@ public class SelectFiles {
 		});
 		btnConfirm.setBounds(213, 336, 230, 25);
 		frmSelectFilesPath.getContentPane().add(btnConfirm);
-		
+
 		JButton btnSelect = new JButton("Select..");
 		btnSelect.addMouseListener(new MouseAdapter() {
 			@Override
@@ -232,7 +232,7 @@ public class SelectFiles {
 		frmSelectFilesPath.getContentPane().add(button_1);
 		frmSelectFilesPath.setVisible(true);	//鏄剧ず绐楀彛
 	}
-	
+
 	protected void setPath_old(String path_old){
 		this.path_old = path_old;
 	}
