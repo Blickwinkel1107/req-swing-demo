@@ -32,13 +32,14 @@ public class SelectFiles {
 	private static String MAINTAINER = "maintainer";
 	private static String MANAGER = "manager";
 
-	public void setUsername(String username){
+	public void setUsername(String username) {
 		this.username = username;
 	}
 
-	public void setPassword(char[] password){
+	public void setPassword(char[] password) {
 		this.password = password;
 	}
+
 	/**
 	 * Launch the application.
 	 */
@@ -66,18 +67,16 @@ public class SelectFiles {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		//RetrievingDialog retriever = new RetrievingDialog();
-		//retriever.hide();
-		//retriever.show();
-		//System.out.println(this.username);
-		//System.out.println(this.password);
+		// RetrievingDialog retriever = new RetrievingDialog();
+		// retriever.hide();
+		// retriever.show();
+		// System.out.println(this.username);
+		// System.out.println(this.password);
 		frmSelectFilesPath = new JFrame();
 		frmSelectFilesPath.setTitle("Select files path");
 		frmSelectFilesPath.setBounds(100, 100, 655, 442);
 		frmSelectFilesPath.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSelectFilesPath.getContentPane().setLayout(null);
-
-
 
 		textOldVersion = new JTextField();
 		textOldVersion.setBounds(118, 99, 390, 19);
@@ -110,27 +109,26 @@ public class SelectFiles {
 		btnConfirm.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//retriever.show();
-				//frmSelectFilesPath.setVisible(false);
+				// retriever.show();
+				// frmSelectFilesPath.setVisible(false);
 				/*
 				 * modified by YHR
 				 */
 				System.out.println(username);
 				System.out.println(password);
-				if (username.equals(MAINTAINER) == true){
-					//System.out.println("fuck");
-					//yx: he xin dai ma :-)
+				if (username.equals(MAINTAINER) == true) {
+					// System.out.println("fuck");
+					// yx: he xin dai ma :-)
 					System.out.println("enter MaintainerWin");
-					//frmSelectFilesPath.setVisible(false);
+					// frmSelectFilesPath.setVisible(false);
 					String oldVerPath;
 					String newVerPath;
 					String reqPath;
-					if(textOldVersion.getText().equals("")) {
-						oldVerPath = "/Users/mac/Desktop/INFORM-master/data/sample/AquaLush_Change3";
-						newVerPath = "/Users/mac/Desktop/INFORM-master/data/sample/AquaLush_Change4";
-						reqPath = "/Users/mac/Desktop/INFORM-master/data/sample/AquaLush_Requirement";
-					}
-					else {
+					if (textOldVersion.getText().equals("")) {
+						oldVerPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change3";
+						newVerPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change4";
+						reqPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Requirement";
+					} else {
 						oldVerPath = textOldVersion.getText();
 						newVerPath = textNewVersion.getText();
 						reqPath = textReq.getText();
@@ -138,16 +136,15 @@ public class SelectFiles {
 
 					Retro re = new Retro();
 
-					//re.process();
+					// re.process();
 					re.processTest(newVerPath, oldVerPath, reqPath);
 
 					MaintainerWin maintainer = new MaintainerWin(re);
 					maintainer.createPopupMenu();
-					//retriever.close();
+					// retriever.close();
 					frmSelectFilesPath.dispose();
 
-				}
-				else if (username.equals(MANAGER) == true){
+				} else if (username.equals(MANAGER) == true) {
 					ManagerWin manager = new ManagerWin();
 					System.out.println("enter ManagerWin");
 					manager.setPath_old(path_old);
@@ -161,7 +158,6 @@ public class SelectFiles {
 			public void mouseEntered(MouseEvent e) {
 				btnConfirm.setText("Retrieving requirements ...");
 			}
-
 
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -181,13 +177,13 @@ public class SelectFiles {
 				JFileChooser fileChooser = new JFileChooser("/Users/mac/Desktop");
 				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				int returnVal = fileChooser.showOpenDialog(fileChooser);
-				if(returnVal == JFileChooser.APPROVE_OPTION){
-				path_req = fileChooser.getSelectedFile().getAbsolutePath();//杩欎釜灏辨槸浣犻�夋嫨鐨勬枃浠跺す鐨勮矾寰�
-				System.out.println(path_req);
-				textReq.setText(path_req);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					path_req = fileChooser.getSelectedFile().getAbsolutePath();// 杩欎釜灏辨槸浣犻�夋嫨鐨勬枃浠跺す鐨勮矾寰�
+					System.out.println(path_req);
+					textReq.setText(path_req);
 				}
 			}
-			});
+		});
 
 		btnSelect.setBounds(519, 183, 106, 25);
 		frmSelectFilesPath.getContentPane().add(btnSelect);
@@ -202,10 +198,10 @@ public class SelectFiles {
 				JFileChooser fileChooser = new JFileChooser("/Users/mac/Desktop");
 				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				int returnVal = fileChooser.showOpenDialog(fileChooser);
-				if(returnVal == JFileChooser.APPROVE_OPTION){
-				path_new = fileChooser.getSelectedFile().getAbsolutePath();//杩欎釜灏辨槸浣犻�夋嫨鐨勬枃浠跺す鐨勮矾寰�
-				System.out.println(path_new);
-				textNewVersion.setText(path_new);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					path_new = fileChooser.getSelectedFile().getAbsolutePath();// 杩欎釜灏辨槸浣犻�夋嫨鐨勬枃浠跺す鐨勮矾寰�
+					System.out.println(path_new);
+					textNewVersion.setText(path_new);
 				}
 			}
 		});
@@ -222,8 +218,8 @@ public class SelectFiles {
 				JFileChooser fileChooser = new JFileChooser("/Users/mac/Desktop");
 				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				int returnVal = fileChooser.showOpenDialog(fileChooser);
-				if(returnVal == JFileChooser.APPROVE_OPTION){
-					path_old = fileChooser.getSelectedFile().getAbsolutePath();//杩欎釜灏辨槸浣犻�夋嫨鐨勬枃浠跺す鐨勮矾寰�
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					path_old = fileChooser.getSelectedFile().getAbsolutePath();// 杩欎釜灏辨槸浣犻�夋嫨鐨勬枃浠跺す鐨勮矾寰�
 					System.out.println(path_old);
 				}
 				textOldVersion.setText(path_old);
@@ -231,18 +227,18 @@ public class SelectFiles {
 		});
 		button_1.setBounds(519, 96, 106, 25);
 		frmSelectFilesPath.getContentPane().add(button_1);
-		frmSelectFilesPath.setVisible(true);	//鏄剧ず绐楀彛
+		frmSelectFilesPath.setVisible(true); // 鏄剧ず绐楀彛
 	}
 
-	protected void setPath_old(String path_old){
+	protected void setPath_old(String path_old) {
 		this.path_old = path_old;
 	}
 
-	protected void setPath_new(String path_new){
+	protected void setPath_new(String path_new) {
 		this.path_new = path_new;
 	}
 
-	protected void setPath_req(String path_req){
+	protected void setPath_req(String path_req) {
 		this.path_req = path_req;
 	}
 }

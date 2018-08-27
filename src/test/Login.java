@@ -17,7 +17,7 @@ import test.SelectFiles;
 
 public class Login {
 
-	private JFrame frame;
+	private JFrame frmLogIn;
 	private JTextField usernameField;
 	private JPasswordField passwordField;
 	private String username;
@@ -31,7 +31,7 @@ public class Login {
 			public void run() {
 				try {
 					Login window = new Login();
-					window.frame.setVisible(true);
+					window.frmLogIn.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -50,14 +50,15 @@ public class Login {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmLogIn = new JFrame();
+		frmLogIn.setTitle("Log in");
+		frmLogIn.setBounds(100, 100, 450, 300);
+		frmLogIn.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmLogIn.getContentPane().setLayout(null);
 
 		JPanel panel = new JPanel();
 		panel.setBounds(52, 43, 341, 36);
-		frame.getContentPane().add(panel);
+		frmLogIn.getContentPane().add(panel);
 
 		JLabel lblUsername = new JLabel("username:");
 		panel.add(lblUsername);
@@ -65,7 +66,7 @@ public class Login {
 		usernameField = new JTextField();
 		usernameField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//username = textField_1.getText();
+				// username = textField_1.getText();
 			}
 		});
 		panel.add(usernameField);
@@ -73,7 +74,7 @@ public class Login {
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(52, 91, 341, 36);
-		frame.getContentPane().add(panel_1);
+		frmLogIn.getContentPane().add(panel_1);
 
 		JLabel lblPassword = new JLabel("password:");
 		panel_1.add(lblPassword);
@@ -83,7 +84,7 @@ public class Login {
 		passwordField.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-				//password = passwordField.getText();
+				// password = passwordField.getText();
 			}
 		});
 		passwordField.setColumns(10);
@@ -98,28 +99,28 @@ public class Login {
 				password = passwordField.getPassword();
 				System.out.println(username);
 				System.out.println(password);
-				//MaintainerWin window = new MaintainerWin();
+				// MaintainerWin window = new MaintainerWin();
 				SelectFiles selectFiles = new SelectFiles();
 				/*
-				 modified by YHR
+				 * modified by YHR
 				 */
 				selectFiles.setUsername(username);
 				selectFiles.setPassword(password);
-				//frame.setVisible(false);
-				frame.dispose();
+				// frame.setVisible(false);
+				frmLogIn.dispose();
 			}
 		});
 		btnLogin.setBounds(155, 139, 117, 29);
-		frame.getContentPane().add(btnLogin);
+		frmLogIn.getContentPane().add(btnLogin);
 
 		JButton btnExit = new JButton("Exit");
 		btnExit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.dispose();
+				frmLogIn.dispose();
 			}
 		});
 		btnExit.setBounds(155, 180, 117, 29);
-		frame.getContentPane().add(btnExit);
+		frmLogIn.getContentPane().add(btnExit);
 	}
 }

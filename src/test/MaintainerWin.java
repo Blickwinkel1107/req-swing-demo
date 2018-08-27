@@ -5,7 +5,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollBar;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
@@ -22,11 +21,10 @@ import edu.nju.cs.inform.core.type.CodeElementChange;
 import retro.Retro;
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -54,6 +52,8 @@ public class MaintainerWin {
 		}
 	}
 	
+	
+
 	/*
 	 * modified by YHR
 	 */
@@ -61,37 +61,75 @@ public class MaintainerWin {
 	private int row;
 	private JTextArea textAreaUpdateInfo;
 	private JButton btnSave;
-	//the functions for the popup-menu
+	protected Object[][] recommendMethodList;
+
+	// the functions for the popup-menu
 	protected void createPopupMenu() {
-        m_popupMenu = new JPopupMenu();
-        
-        JMenuItem menItem_1 = new JMenuItem();
-        menItem_1.setText("Mark as outdate");
-        menItem_1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-            	//System.out.print(Arrays.toString(reqElementsList[row]));
-            	reqElementsList[row][3] = "Outdate";
-            	tblReqElementsList.updateUI();
-            	textAreaUpdateInfo.setEditable(true);
-            	textAreaUpdateInfo.setText("");
-            }
-        });
-        m_popupMenu.add(menItem_1);
-        
-        JMenuItem menItem_2 = new JMenuItem();
-        menItem_2.setText("Methods recommand");
-        menItem_2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-            	// the function for 'Methods recommand'
-            }
-        });
-        m_popupMenu.add(menItem_2);
-    }
+		m_popupMenu = new JPopupMenu();
+
+		JMenuItem menItem_1 = new JMenuItem();
+		menItem_1.setText("Mark as outdated");
+		menItem_1.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				// System.out.print(Arrays.toString(reqElementsList[row]));
+				reqElementsList[row][3] = "Outdated";
+				tblReqElementsList.updateUI();
+				textAreaUpdateInfo.setEditable(true);
+				textAreaUpdateInfo.setText("");
+			}
+		});
+		m_popupMenu.add(menItem_1);
+
+		JMenuItem menItem_2 = new JMenuItem();
+		menItem_2.setText("Methods recommand");
+		menItem_2.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				// the function for 'Methods recommand'
+				String req = reqElementsList[row][2].toString();
+				ArrayList<Object[]> data = new ArrayList<Object[]>();
+				List<String> recommendList = retro.recommendMethodsForRequirements.get(req);
+				int index = 1;
+				for (String method : recommendList) {
+					data.add(new String[]{
+						index + "",
+						method
+					});
+					++index;
+				}
+				recommendMethodList = new Object[data.size()][2];
+				for (int i = 0; i < data.size(); ++i) {
+					recommendMethodList[i] = data.get(i);
+				}
+				tblRecommendMethods = new JTable(recommendMethodList, tblRecommendMethodsColumns);
+				tblRecommendMethods.addMouseListener(new MouseAdapter() {
+					private int previousSelectedRow;
+					/*
+					 * modified by YHR 表格接收鼠标左、右键点击事件
+					 */
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						if (e.getButton() == MouseEvent.BUTTON1 && previousSelectedRow != tblRecommendMethods.rowAtPoint(e.getPoint())) {
+							// LEFT MOUSE CLICKED
+							int tableRow = tblRecommendMethods.rowAtPoint(e.getPoint());
+							previousSelectedRow = tableRow;
+							System.out.println(recommendMethodList[tableRow][1]);
+							String selectedMethod = recommendMethodList[tableRow][1].toString();
+							String methodBody = retro.recommentMethodsBodyCollection.get(selectedMethod);
+							textAreaMethodContent.setText(methodBody);
+						}
+					}
+				});
+				makeFace(tblRecommendMethods);
+				scrollPaneRecommendMethods.setViewportView(tblRecommendMethods);
+			}
+		});
+		m_popupMenu.add(menItem_2);
+	}
 
 	private JFrame frmRequirementsUpdate;
 	private JTable tblCodeElementsList;
 	private JTable tblReqElementsList;
-	private JTable tableRecommendMethods;
+	private JTable tblRecommendMethods;
 	private String[] codeColumns;
 	private Object[][] codeElementsList;
 	private String[] reqColumn;
@@ -99,6 +137,10 @@ public class MaintainerWin {
 	public Retro retro;
 	private JScrollPane scrollPane_1;
 	private Object[][] reqElementsList;
+	private String[] tblRecommendMethodsColumns;
+	private JScrollPane scrollPaneRecommendMethods;
+	private JTextArea textAreaReqText;
+	private JTextArea textAreaMethodContent;
 
 	/**
 	 * Launch the application.
@@ -153,12 +195,14 @@ public class MaintainerWin {
 		scrollPaneReq.setBounds(423, 257, 371, 138);
 		frmRequirementsUpdate.getContentPane().add(scrollPaneReq);
 
-		JTextArea textAreaReqText = new JTextArea();
+		textAreaReqText = new JTextArea();
+		textAreaReqText.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		textAreaReqText.setWrapStyleWord(true);
 		textAreaReqText.setEditable(false);
 		textAreaReqText.setLineWrap(true);
 		textAreaReqText.setBackground(Color.WHITE);
-		DefaultCaret caret = (DefaultCaret)textAreaReqText.getCaret();  
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);  
+		DefaultCaret caret = (DefaultCaret) textAreaReqText.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 		scrollPaneReq.setViewportView(textAreaReqText);
 
 		JPanel panelUpdateInfo = new JPanel();
@@ -174,11 +218,13 @@ public class MaintainerWin {
 		frmRequirementsUpdate.getContentPane().add(scrollPaneUpdateInfo);
 
 		textAreaUpdateInfo = new JTextArea();
+		textAreaUpdateInfo.setWrapStyleWord(true);
 		textAreaUpdateInfo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				String content = textAreaUpdateInfo.getText();
-				if (!content.equals("") && !content.equals("Please mark the outdated requirments then you can edit update information here.")) {
+				if (!content.equals("") && !content
+						.equals("Please mark the outdated requirments then you can edit update information here.")) {
 					btnSave.setEnabled(true);
 				}
 			}
@@ -234,30 +280,14 @@ public class MaintainerWin {
 			reqElementsList[i] = data.get(i);
 		}
 
-		JScrollPane scrollPaneRecommendMethods = new JScrollPane();
+		scrollPaneRecommendMethods = new JScrollPane();
 		scrollPaneRecommendMethods.setBounds(6, 257, 407, 140);
 		frmRequirementsUpdate.getContentPane().add(scrollPaneRecommendMethods);
 
-		String[] names_3 = { "No", "Id" };
-		tableRecommendMethods = new JTable(new Object[][] {}, names_3);
-		tableRecommendMethods.addMouseListener(new MouseAdapter() {
-			/*
-			 * modified by YHR 表格接收鼠标左、右键点击事件
-			 */
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON1) {
-					// LEFT MOUSE CLICKED
-					int tableRow = tableRecommendMethods.rowAtPoint(e.getPoint());
-					System.out.println(tableRow);
-				}
-				if (e.getButton() == MouseEvent.BUTTON3) {
-					// RIGHT MOUSE CLICKED
-				}
-			}
-		});
-		makeFace(tableRecommendMethods);
-		scrollPaneRecommendMethods.setViewportView(tableRecommendMethods);
+		tblRecommendMethodsColumns = new String[] { "No", "Id" };
+		tblRecommendMethods = new JTable(new Object[][] {}, tblRecommendMethodsColumns);
+		makeFace(tblRecommendMethods);
+		scrollPaneRecommendMethods.setViewportView(tblRecommendMethods);
 
 		JPanel panelRecomendMethods = new JPanel();
 		panelRecomendMethods.setBounds(6, 232, 407, 163);
@@ -270,10 +300,14 @@ public class MaintainerWin {
 		scrollPaneMethodContent.setBounds(6, 433, 407, 142);
 		frmRequirementsUpdate.getContentPane().add(scrollPaneMethodContent);
 
-		JTextArea textAreaMethodContent = new JTextArea();
+		textAreaMethodContent = new JTextArea();
+		textAreaMethodContent.setFont(new Font("Consolas", Font.PLAIN, 11));
+		textAreaMethodContent.setWrapStyleWord(true);
 		textAreaMethodContent.setEditable(false);
 		textAreaMethodContent.setLineWrap(true);
 		textAreaMethodContent.setBackground(Color.WHITE);
+		caret = (DefaultCaret) textAreaMethodContent.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 		scrollPaneMethodContent.setViewportView(textAreaMethodContent);
 
 		JScrollPane scrollPaneReqElementsList = new JScrollPane();
@@ -282,6 +316,7 @@ public class MaintainerWin {
 		tblReqElementsList = new JTable(reqElementsList, reqColumn);
 		tblReqElementsList.addMouseListener(new MouseAdapter() {
 			private int previousSelectRow;
+
 			/*
 			 * modified by YHR 表格接收鼠标左、右键点击事件
 			 */
@@ -295,30 +330,28 @@ public class MaintainerWin {
 					System.out.println(reqName);
 					try {
 						InputStream f = new FileInputStream("data/sample/AquaLush_Requirement_Origin/" + reqName);
-						byte[] b = new byte[1024];//把所有的数据读取到这个字节当中
+						byte[] b = new byte[1024];// 把所有的数据读取到这个字节当中
 						f.read(b);
 						String str = new String(b);
 						str = str.trim();
 						textAreaReqText.setText(str);
 						textAreaReqText.setSelectionStart(0);
 						f.close();
-						
+
 					} catch (FileNotFoundException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
 				if (e.getButton() == MouseEvent.BUTTON3) {
 					int focusedRowIndex = tblReqElementsList.rowAtPoint(e.getPoint());
-		            if (focusedRowIndex == -1) {
-		                return;
-		            }
-		            row = focusedRowIndex;
-		            tblReqElementsList.setRowSelectionInterval(focusedRowIndex, focusedRowIndex);
-		            m_popupMenu.show(tblReqElementsList, e.getX(), e.getY());
+					if (focusedRowIndex == -1) {
+						return;
+					}
+					row = focusedRowIndex;
+					tblReqElementsList.setRowSelectionInterval(focusedRowIndex, focusedRowIndex);
+					m_popupMenu.show(tblReqElementsList, e.getX(), e.getY());
 				}
 			}
 		});
@@ -331,13 +364,13 @@ public class MaintainerWin {
 
 		JLabel lblRequirmentsText = new JLabel("Requirements Text");
 		panelRequirmentsText.add(lblRequirmentsText);
-		
-				JPanel panelMethodContent = new JPanel();
-				panelMethodContent.setBounds(6, 407, 407, 28);
-				frmRequirementsUpdate.getContentPane().add(panelMethodContent);
-				
-						JLabel lblMethodContent = new JLabel("Method Content");
-						panelMethodContent.add(lblMethodContent);
+
+		JPanel panelMethodContent = new JPanel();
+		panelMethodContent.setBounds(6, 407, 407, 28);
+		frmRequirementsUpdate.getContentPane().add(panelMethodContent);
+
+		JLabel lblMethodContent = new JLabel("Method Content");
+		panelMethodContent.add(lblMethodContent);
 		frmRequirementsUpdate.setVisible(true);
 	}
 
