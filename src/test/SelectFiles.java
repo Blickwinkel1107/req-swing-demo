@@ -6,17 +6,14 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.JLabel;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.InvocationTargetException;
-
 import test.MaintainerWin;
 import test.ManagerWin;
 
 import retro.Retro;
-import test.RetrievingDialog;
 
 public class SelectFiles {
 
@@ -108,10 +105,6 @@ public class SelectFiles {
 		JLabel lblRequirement = new JLabel("Requirement");
 		lblRequirement.setBounds(12, 181, 100, 29);
 		frmSelectFilesPath.getContentPane().add(lblRequirement);
-		
-		JLabel lblStartProgress = new JLabel("Retrieving Requirements ...");
-		lblStartProgress.setVisible(false);
-		lblStartProgress.setBounds(253, 311, 162, 15);
 
 		JButton btnConfirm = new JButton("Confirm");
 		btnConfirm.addMouseListener(new MouseAdapter() {
@@ -122,11 +115,6 @@ public class SelectFiles {
 				/*
 				 * modified by YHR
 				 */
-				if(e.getButton() == 3) {
-					lblStartProgress.setVisible(true);
-					return;
-				}
-				lblStartProgress.setVisible(true);
 				System.out.println(username);
 				System.out.println(password);
 				if (username.equals(MAINTAINER) == true){
@@ -149,15 +137,9 @@ public class SelectFiles {
 					}
 					
 					Retro re = new Retro();
-					SwingUtilities.invokeLater(new Runnable() {
-						
-						@Override
-						public void run() {
-							// TODO Auto-generated method stub
-							re.processTest(oldVerPath, newVerPath, reqPath);
-						}
-					});
+					
 					//re.process();
+					re.processTest(oldVerPath, newVerPath, reqPath);
 					
 					MaintainerWin maintainer = new MaintainerWin();
 					maintainer.setRetro(re);
@@ -174,8 +156,19 @@ public class SelectFiles {
 				}
 				frmSelectFilesPath.dispose();
 			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnConfirm.setText("Retrieving requirements ...");
+			}
+			
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnConfirm.setText("Confirm");
+			}
 		});
-		btnConfirm.setBounds(269, 336, 117, 25);
+		btnConfirm.setBounds(213, 336, 230, 25);
 		frmSelectFilesPath.getContentPane().add(btnConfirm);
 		
 		JButton btnSelect = new JButton("Select..");
@@ -238,9 +231,6 @@ public class SelectFiles {
 		});
 		button_1.setBounds(519, 96, 106, 25);
 		frmSelectFilesPath.getContentPane().add(button_1);
-		
-		
-		frmSelectFilesPath.getContentPane().add(lblStartProgress);
 		frmSelectFilesPath.setVisible(true);	//鏄剧ず绐楀彛
 	}
 	
