@@ -10,8 +10,8 @@ import java.util.*;
 
 /**
  * created by yx 2018/8/26
- * ������Ŀdemo
- * Retro�㷨�����ļ�
+ * 锟斤拷锟斤拷锟斤拷目demo
+ * Retro锟姐法锟斤拷锟斤拷锟侥硷拷
  */
 
 public class Retro {
@@ -22,6 +22,7 @@ public class Retro {
 	public Set<CodeElementChange> codeElementChangeList;
 	public List<Map.Entry<String, Double>> reqElementList;
 	public Map<String, List<String>> recommendMethodsForRequirements;
+	public Map<String, String> recommentMethodsBodyCollection;
 
 	public void process(String new_source_path, String old_source_path, String requirement_Path) {
 		CodeElementsComparer comparer;
@@ -40,13 +41,14 @@ public class Retro {
         final MethodRecommendation methodRecommendation = new MethodRecommendation(comparer, requirementCollection, similarityMatrix);
         final Map<String, List<String>> recommendMethodsForRequirements = methodRecommendation.getRecommendMethodsForRequirements();
         this.recommendMethodsForRequirements = recommendMethodsForRequirements;
+        recommentMethodsBodyCollection = comparer.getRecommentMethodsBodyCollection();
 
         Map<String, Double> candidatedOutdatedRequirementsRank = retrieval.getCandidateOutdatedRequirementsRank();
-        //��mapת����list
+        //锟斤拷map转锟斤拷锟斤拷list
         List<Map.Entry<String, Double>> list = new ArrayList<>(candidatedOutdatedRequirementsRank.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<String, Double>>() {
             @Override
-            //��������
+            //锟斤拷锟斤拷锟斤拷锟斤拷
             public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
                 return o2.getValue().compareTo(o1.getValue());
             }
@@ -55,22 +57,22 @@ public class Retro {
 	}
 
 
-	//��Ԫ�������
+	//锟斤拷元锟斤拷锟斤拷锟斤拷锟�
 	public static void main(String[] args) {
-		String old_source_path = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Change3";
-		String new_source_path = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Change4";
-		String requirement_Path = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Requirement";
+		String old_source_path = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change3";
+		String new_source_path = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change4";
+		String requirement_Path = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Requirement";
 		Retro re = new Retro();
 		re.processTest(new_source_path, old_source_path, requirement_Path);
-		System.out.println("-----------------���������ı����к����Ƽ�-----------------");
-        //������������
-        //��ȡ��requirementElementsTable�б������һ�е�id--eg:SRS358
+		System.out.println("-----------------锟斤拷锟斤拷锟斤拷锟斤拷锟侥憋拷锟斤拷锟叫猴拷锟斤拷锟狡硷拷-----------------");
+        //锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷
+        //锟斤拷取锟斤拷requirementElementsTable锟叫憋拷锟斤拷锟斤拷锟揭伙拷械锟絠d--eg:SRS358
 		String req = null;
 		do {
-	        System.out.print("���������ı����(��ʽ��SRSxxx)������q�˳���");
+	        System.out.print("锟斤拷锟斤拷锟斤拷锟斤拷锟侥憋拷锟斤拷锟�(锟斤拷式锟斤拷SRSxxx)锟斤拷锟斤拷锟斤拷q锟剿筹拷锟斤拷");
 	        Scanner scan = new Scanner(System.in);
 	        req = scan.nextLine();
-	        System.out.println("�����ı���" + req);
+	        System.out.println("锟斤拷锟斤拷锟侥憋拷锟斤拷" + req);
 
 	        System.out.println("-----------------methods recommendation-----------------");
 
@@ -83,7 +85,7 @@ public class Retro {
         }while(req != "q");
 	}
 
-	//������㷨
+	//锟斤拷锟斤拷锟斤拷惴�
 	public void processTest(String new_source_path, String old_source_path, String requirement_Path) {
         CodeElementsComparer comparer;
         System.out.println("-----------------Change Regions-----------------");
@@ -95,9 +97,12 @@ public class Retro {
         for (CodeElementChange elementChange : codeElementChangeList) {
             System.out.println(elementChange.getElementName() + " " + elementChange.getElementType() + " " + elementChange.getChangeType());
         }
+        //getRecommentMethodsBodyCollection
+        System.out.println("-----------------Change Methods-----------------");
+        recommentMethodsBodyCollection = comparer.getRecommentMethodsBodyCollection(); 
+       
         int reqDisplayNum = 30;
         System.out.println("-----------------Top" + reqDisplayNum + " Requirement Elements-----------------");
-
         // get change description from code changes
         ArtifactsCollection changeDescriptionCollection = comparer.getChangeDescriptionCollection();
         final ArtifactsCollection requirementCollection = ArtifactsReader.getCollections(requirement_Path, ".txt");
@@ -111,11 +116,11 @@ public class Retro {
         this.recommendMethodsForRequirements = recommendMethodsForRequirements;
 
         Map<String, Double> candidatedOutdatedRequirementsRank = retrieval.getCandidateOutdatedRequirementsRank();
-        //��mapת����list
+        //锟斤拷map转锟斤拷锟斤拷list
         List<Map.Entry<String, Double>> list = new ArrayList<>(candidatedOutdatedRequirementsRank.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<String, Double>>() {
             @Override
-            //��������
+            //锟斤拷锟斤拷锟斤拷锟斤拷
             public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
                 return o2.getValue().compareTo(o1.getValue());
             }

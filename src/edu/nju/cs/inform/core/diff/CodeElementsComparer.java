@@ -252,4 +252,19 @@ public class CodeElementsComparer {
     public String getOldVersionCodeDirPath() {
         return oldVersionCodeDirPath;
     }
+
+    //modified by yx
+	public Map<String, String> getRecommentMethodsBodyCollection() {
+		Map<String, String> recommentMethodsBodyCollection = new HashMap<String, String>();
+		for (CodeElementChange elementChange : methodFieldsChangesList) {
+            if (elementChange.getElementType().equals(ElementType.Method)) {
+                String artName = elementChange.getElementName();
+                if(newVersionCodeElements.getMethodBody(artName) != null)
+                	recommentMethodsBodyCollection.put(artName, newVersionCodeElements.getMethodBody(artName));
+                else
+                	recommentMethodsBodyCollection.put(artName, oldVersionCodeElements.getMethodBody(artName));
+            }
+        }
+		return recommentMethodsBodyCollection;
+	}
 }
