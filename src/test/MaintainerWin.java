@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import java.awt.Color;
@@ -13,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.text.DefaultCaret;
 
 import edu.nju.cs.inform.core.type.CodeElementChange;
 import retro.Retro;
@@ -21,6 +23,11 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class MaintainerWin {
 
@@ -105,15 +112,17 @@ public class MaintainerWin {
 		JLabel lblNewLabel = new JLabel("Requirement Elements");
 		panel_1.add(lblNewLabel);
 
-		JScrollPane scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(423, 285, 371, 110);
-		frmRequirementsUpdate.getContentPane().add(scrollPane_3);
+		JScrollPane scrollPaneReq = new JScrollPane();
+		scrollPaneReq.setBounds(423, 285, 371, 110);
+		frmRequirementsUpdate.getContentPane().add(scrollPaneReq);
 
 		JTextArea textAreaReqText = new JTextArea();
 		textAreaReqText.setEditable(false);
 		textAreaReqText.setLineWrap(true);
 		textAreaReqText.setBackground(Color.WHITE);
-		scrollPane_3.setViewportView(textAreaReqText);
+		DefaultCaret caret = (DefaultCaret)textAreaReqText.getCaret();  
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);  
+		scrollPaneReq.setViewportView(textAreaReqText);
 
 		JPanel panel_4 = new JPanel();
 		panel_4.setBounds(423, 407, 371, 26);
@@ -251,15 +260,35 @@ public class MaintainerWin {
 		frmRequirementsUpdate.getContentPane().add(scrollPane_1_1);
 		tblReqElementsList = new JTable(reqElementsList, reqColumn);
 		tblReqElementsList.addMouseListener(new MouseAdapter() {
+			private int previousSelectRow;
 			/*
 			 * modified by YHR 表格接收鼠标左、右键点击事件
 			 */
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON1) {
+				if (e.getButton() == MouseEvent.BUTTON1 && previousSelectRow != tblReqElementsList.getSelectedRow()) {
 					// LEFT MOUSE CLICKED
-					int tableRow = tblReqElementsList.rowAtPoint(e.getPoint());
-					System.out.println(tableRow);
+					previousSelectRow = tblReqElementsList.getSelectedRow();
+					int tableRow = tblReqElementsList.getSelectedRow();
+					String reqName = String.valueOf(tblReqElementsList.getValueAt(tableRow, 2));
+					System.out.println(reqName);
+					try {
+						InputStream f = new FileInputStream("data/sample/AquaLush_Requirement_Origin/" + reqName);
+						byte[] b = new byte[1024];//把所有的数据读取到这个字节当中
+						f.read(b);
+						String str = new String(b);
+						str = str.trim();
+						textAreaReqText.setText(str);
+						textAreaReqText.setSelectionStart(0);
+						f.close();
+						
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 				if (e.getButton() == MouseEvent.BUTTON3) {
 					// RIGHT MOUSE CLICKED
