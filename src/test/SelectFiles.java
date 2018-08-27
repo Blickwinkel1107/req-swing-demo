@@ -139,7 +139,7 @@ public class SelectFiles {
 					Retro re = new Retro();
 					
 					//re.process();
-					re.processTest(oldVerPath, newVerPath, reqPath);
+					re.processTest(newVerPath, oldVerPath, reqPath);
 					
 					new MaintainerWin(re);
 					//retriever.close();
