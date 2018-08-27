@@ -25,26 +25,24 @@ import java.awt.event.MouseEvent;
 public class MaintainerWin {
 
 	public static void makeFace(JTable table) {
-		   try {
-		    DefaultTableCellRenderer tcr = new DefaultTableCellRenderer() {
-		     public Component getTableCellRendererComponent(JTable table,
-		       Object value, boolean isSelected, boolean hasFocus,
-		       int row, int column) {
-		      if (row % 2 == 0)
-		       setBackground(Color.white); // 璁剧疆濂囨暟琛屽簳鑹�
-		      else if (row % 2 == 1)
-		       setBackground(new Color(206, 231, 255)); // 璁剧疆鍋舵暟琛屽簳鑹�
-		      return super.getTableCellRendererComponent(table, value,
-		        isSelected, hasFocus, row, column);
-		     }
-		    };
-		    for (int i = 0; i < table.getColumnCount(); i++) {
-		     table.getColumn(table.getColumnName(i)).setCellRenderer(tcr);
-		    }
-		   } catch (Exception ex) {
-		    ex.printStackTrace();
-		   }
+		try {
+			DefaultTableCellRenderer tcr = new DefaultTableCellRenderer() {
+				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+						boolean hasFocus, int row, int column) {
+					if (row % 2 == 0)
+						setBackground(Color.white); // 璁剧疆濂囨暟琛屽簳鑹�
+					else if (row % 2 == 1)
+						setBackground(new Color(206, 231, 255)); // 璁剧疆鍋舵暟琛屽簳鑹�
+					return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+				}
+			};
+			for (int i = 0; i < table.getColumnCount(); i++) {
+				table.getColumn(table.getColumnName(i)).setCellRenderer(tcr);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
+	}
 
 	private JFrame frmRequirementsUpdate;
 	private JTable tblCodeElementsList;
@@ -57,7 +55,6 @@ public class MaintainerWin {
 	public Retro retro;
 	private JScrollPane scrollPane_1;
 	private Object[][] reqElementsList;
-	
 
 	/**
 	 * Launch the application.
@@ -87,6 +84,7 @@ public class MaintainerWin {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+
 		frmRequirementsUpdate = new JFrame();
 		frmRequirementsUpdate.setTitle("Requirements update - maintainer");
 		frmRequirementsUpdate.setBounds(100, 100, 836, 663);
@@ -100,7 +98,6 @@ public class MaintainerWin {
 		JLabel lblDifferingCodeElements = new JLabel("Differing Code Elements");
 		panel.add(lblDifferingCodeElements);
 
-		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(423, 6, 371, 28);
 		frmRequirementsUpdate.getContentPane().add(panel_1);
@@ -108,25 +105,12 @@ public class MaintainerWin {
 		JLabel lblNewLabel = new JLabel("Requirement Elements");
 		panel_1.add(lblNewLabel);
 
-		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(6, 257, 407, 28);
-		frmRequirementsUpdate.getContentPane().add(panel_2);
-
-		JLabel lblRecomand = new JLabel("Recommend Method");
-		panel_2.add(lblRecomand);
-
-		JPanel panel_3 = new JPanel();
-		panel_3.setBounds(423, 257, 371, 28);
-		frmRequirementsUpdate.getContentPane().add(panel_3);
-
-		JLabel lblRequirmentsText = new JLabel("Requirements Text");
-		panel_3.add(lblRequirmentsText);
-
 		JScrollPane scrollPane_3 = new JScrollPane();
 		scrollPane_3.setBounds(423, 285, 371, 110);
 		frmRequirementsUpdate.getContentPane().add(scrollPane_3);
 
 		JTextArea textAreaReqText = new JTextArea();
+		textAreaReqText.setEditable(false);
 		textAreaReqText.setLineWrap(true);
 		textAreaReqText.setBackground(Color.WHITE);
 		scrollPane_3.setViewportView(textAreaReqText);
@@ -135,10 +119,6 @@ public class MaintainerWin {
 		panel_4.setBounds(423, 407, 371, 26);
 		frmRequirementsUpdate.getContentPane().add(panel_4);
 
-				JTextArea textArea_1 = new JTextArea();
-				panel_4.add(textArea_1);
-				textArea_1.setBackground(Color.WHITE);
-
 		JLabel lblUpdateInfo = new JLabel("Update Info");
 		panel_4.add(lblUpdateInfo);
 
@@ -146,7 +126,7 @@ public class MaintainerWin {
 		scrollPane_4.setEnabled(false);
 		scrollPane_4.setBounds(423, 433, 371, 142);
 		frmRequirementsUpdate.getContentPane().add(scrollPane_4);
-		
+
 		JTextArea textAreaUpdateInfo = new JTextArea();
 		textAreaUpdateInfo.setEditable(false);
 		textAreaUpdateInfo.setFont(new Font("Monospaced", Font.PLAIN, 13));
@@ -166,114 +146,138 @@ public class MaintainerWin {
 		scrollPane.setBounds(6, 35, 407, 223);
 		frmRequirementsUpdate.getContentPane().add(scrollPane);
 
-		codeColumns = new String[]{ "No", "Id", "Type", "Changed"};
-		//codeElementsList = new Object[4][4];
+		codeColumns = new String[] { "No", "Id", "Type", "Changed" };
+		// codeElementsList = new Object[4][4];
 		int idx;
-		ArrayList<Object[]> data; 
+		ArrayList<Object[]> data;
 		data = new ArrayList<Object[]>();
 		idx = 1;
 		for (CodeElementChange elementChange : retro.codeElementChangeList) {
-			data.add(new String[]{
-				idx + "",
-				elementChange.getElementName().toString(),
-				elementChange.getElementType().toString(),
-				elementChange.getChangeType().toString()
-				});
+			data.add(new String[] { idx + "", elementChange.getElementName().toString(),
+					elementChange.getElementType().toString(), elementChange.getChangeType().toString() });
 			++idx;
-        }
+		}
 		codeElementsList = new Object[data.size()][4];
-		for(int i = 0; i < data.size(); ++i){
+		for (int i = 0; i < data.size(); ++i) {
 			codeElementsList[i] = data.get(i);
 		}
 		tblCodeElementsList = new JTable(codeElementsList, codeColumns);
+		// tblCodeElementsList.isCellEditable(row, column)
 		tblCodeElementsList.addMouseListener(new MouseAdapter() {
 			/*
-			 modified by YHR
-			 表格接收鼠标左、右键点击事件
+			 * modified by YHR 表格接收鼠标左、右键点击事件
 			 */
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1){
-					//LEFT MOUSE CLICKED
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					// LEFT MOUSE CLICKED
 					int tableRow = tblCodeElementsList.rowAtPoint(e.getPoint());
-					System.out.print(tableRow);
+					System.out.println(tableRow);
 				}
-				if(e.getButton() == MouseEvent.BUTTON3) {
-					//RIGHT MOUSE CLICKED
+				if (e.getButton() == MouseEvent.BUTTON3) {
+					// RIGHT MOUSE CLICKED
+					int tableRow = tblCodeElementsList.rowAtPoint(e.getPoint());
+					System.out.println(tableRow);
 				}
-			}	
+			}
 		});
 		makeFace(tblCodeElementsList);
 		scrollPane.setViewportView(tblCodeElementsList);
 
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(423, 35, 371, 223);
-		frmRequirementsUpdate.getContentPane().add(scrollPane_1);
-		
 		idx = 1;
-		reqColumn = new String[]{"No", "Score", "Id", "Status"};
+		reqColumn = new String[] { "No", "Score", "Id", "Status" };
 		data = new ArrayList<Object[]>();
 		idx = 1;
 		for (Map.Entry<String, Double> map : retro.reqElementList) {
-			data.add(new String[]{
-				idx + "",
-				String.valueOf(map.getValue()),
-				map.getKey(),
-				"Normal"
-				});
+			data.add(new String[] { idx + "", String.valueOf(map.getValue()), map.getKey(), "Normal" });
 			++idx;
-        }
+		}
 		reqElementsList = new Object[data.size()][4];
-		for(int i = 0; i < data.size(); ++i){
+		for (int i = 0; i < data.size(); ++i) {
 			reqElementsList[i] = data.get(i);
 		}
-		tblReqElementsList = new JTable(reqElementsList, reqColumn);
-		tblReqElementsList.addMouseListener(new MouseAdapter() {
-			/*
-			 modified by YHR
-			 表格接收鼠标左、右键点击事件
-			 */
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1){
-					//LEFT MOUSE CLICKED
-					int tableRow = tblReqElementsList.rowAtPoint(e.getPoint());
-					System.out.print(tableRow);
-				}
-				if(e.getButton() == MouseEvent.BUTTON3) {
-					//RIGHT MOUSE CLICKED
-				}
-			}	
-		});
-		makeFace(tblReqElementsList);
-		scrollPane_1.setViewportView(tblReqElementsList);
 
 		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(6, 285, 407, 110);
+		scrollPane_2.setBounds(6, 435, 407, 140);
 		frmRequirementsUpdate.getContentPane().add(scrollPane_2);
 
-		String[] names_3 = {"No", "Id"};
-		table_3 = new JTable(new Object[][]{}, names_3);
+		String[] names_3 = { "No", "Id" };
+		table_3 = new JTable(new Object[][] {}, names_3);
 		table_3.addMouseListener(new MouseAdapter() {
 			/*
-			 modified by YHR
-			 表格接收鼠标左、右键点击事件
+			 * modified by YHR 表格接收鼠标左、右键点击事件
 			 */
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1){
-					//LEFT MOUSE CLICKED
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					// LEFT MOUSE CLICKED
 					int tableRow = table_3.rowAtPoint(e.getPoint());
-					System.out.print(tableRow);
+					System.out.println(tableRow);
 				}
-				if(e.getButton() == MouseEvent.BUTTON3) {
-					//RIGHT MOUSE CLICKED
+				if (e.getButton() == MouseEvent.BUTTON3) {
+					// RIGHT MOUSE CLICKED
 				}
-			}	
+			}
 		});
 		makeFace(table_3);
 		scrollPane_2.setViewportView(table_3);
+
+		JPanel panel_2 = new JPanel();
+		panel_2.setBounds(6, 407, 407, 168);
+		frmRequirementsUpdate.getContentPane().add(panel_2);
+
+		JLabel lblRecomand = new JLabel("Recommend Method");
+		panel_2.add(lblRecomand);
+
+		JPanel panel_6 = new JPanel();
+		panel_6.setBounds(6, 257, 407, 28);
+		frmRequirementsUpdate.getContentPane().add(panel_6);
+
+		JLabel lblMethodContent = new JLabel("Method Content");
+		panel_6.add(lblMethodContent);
+
+		JScrollPane scrollPane_5 = new JScrollPane();
+		scrollPane_5.setBounds(6, 285, 407, 110);
+		frmRequirementsUpdate.getContentPane().add(scrollPane_5);
+
+		JTextArea textArea = new JTextArea();
+		textArea.setEditable(false);
+		textArea.setLineWrap(true);
+		textArea.setBackground(Color.WHITE);
+		scrollPane_5.setViewportView(textArea);
+
+		JScrollPane scrollPane_1_1 = new JScrollPane();
+		scrollPane_1_1.setBounds(423, 35, 371, 223);
+		frmRequirementsUpdate.getContentPane().add(scrollPane_1_1);
+		tblReqElementsList = new JTable(reqElementsList, reqColumn);
+		tblReqElementsList.addMouseListener(new MouseAdapter() {
+			/*
+			 * modified by YHR 表格接收鼠标左、右键点击事件
+			 */
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					// LEFT MOUSE CLICKED
+					int tableRow = tblReqElementsList.rowAtPoint(e.getPoint());
+					System.out.println(tableRow);
+				}
+				if (e.getButton() == MouseEvent.BUTTON3) {
+					// RIGHT MOUSE CLICKED
+					int tableRow = tblReqElementsList.rowAtPoint(e.getPoint());
+					System.out.println(tableRow);
+				}
+			}
+		});
+		makeFace(tblReqElementsList);
+		scrollPane_1_1.setViewportView(tblReqElementsList);
+
+		JPanel panel_3 = new JPanel();
+		panel_3.setBounds(423, 257, 371, 28);
+		frmRequirementsUpdate.getContentPane().add(panel_3);
+
+		JLabel lblRequirmentsText = new JLabel("Requirements Text");
+		panel_3.add(lblRequirmentsText);
 		frmRequirementsUpdate.setVisible(true);
 	}
-	
+
 }
