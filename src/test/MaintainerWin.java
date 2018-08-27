@@ -4,8 +4,10 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollBar;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import java.awt.Color;
 import java.awt.Component;
@@ -20,6 +22,7 @@ import edu.nju.cs.inform.core.type.CodeElementChange;
 import retro.Retro;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -50,6 +53,40 @@ public class MaintainerWin {
 			ex.printStackTrace();
 		}
 	}
+	
+	/*
+	 * modified by YHR
+	 */
+	private JPopupMenu m_popupMenu;
+	private int row;
+	private JTextArea textAreaUpdateInfo;
+	private JButton btnSave;
+	//the functions for the popup-menu
+	protected void createPopupMenu() {
+        m_popupMenu = new JPopupMenu();
+        
+        JMenuItem menItem_1 = new JMenuItem();
+        menItem_1.setText("Mark as outdate");
+        menItem_1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	//System.out.print(Arrays.toString(reqElementsList[row]));
+            	reqElementsList[row][3] = "Outdate";
+            	tblReqElementsList.updateUI();
+            	textAreaUpdateInfo.setEditable(true);
+            	textAreaUpdateInfo.setText("");
+            }
+        });
+        m_popupMenu.add(menItem_1);
+        
+        JMenuItem menItem_2 = new JMenuItem();
+        menItem_2.setText("Methods recommand");
+        menItem_2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	// the function for 'Methods recommand'
+            }
+        });
+        m_popupMenu.add(menItem_2);
+    }
 
 	private JFrame frmRequirementsUpdate;
 	private JTable tblCodeElementsList;
@@ -136,7 +173,16 @@ public class MaintainerWin {
 		scrollPane_4.setBounds(423, 433, 371, 142);
 		frmRequirementsUpdate.getContentPane().add(scrollPane_4);
 
-		JTextArea textAreaUpdateInfo = new JTextArea();
+		textAreaUpdateInfo = new JTextArea();
+		textAreaUpdateInfo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseExited(MouseEvent e) {
+				String content = textAreaUpdateInfo.getText();
+				if (!content.equals("") && !content.equals("Please mark the outdated requirments then you can edit update information here.")) {
+					btnSave.setEnabled(true);
+				}
+			}
+		});
 		textAreaUpdateInfo.setEditable(false);
 		textAreaUpdateInfo.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		textAreaUpdateInfo.setLineWrap(true);
@@ -147,7 +193,7 @@ public class MaintainerWin {
 		panel_5.setBounds(423, 574, 371, 43);
 		frmRequirementsUpdate.getContentPane().add(panel_5);
 
-		JButton btnSave = new JButton("Save");
+		btnSave = new JButton("Save");
 		btnSave.setEnabled(false);
 		panel_5.add(btnSave);
 
@@ -172,24 +218,6 @@ public class MaintainerWin {
 		}
 		tblCodeElementsList = new JTable(codeElementsList, codeColumns);
 		// tblCodeElementsList.isCellEditable(row, column)
-		tblCodeElementsList.addMouseListener(new MouseAdapter() {
-			/*
-			 * modified by YHR 表格接收鼠标左、右键点击事件
-			 */
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON1) {
-					// LEFT MOUSE CLICKED
-					int tableRow = tblCodeElementsList.rowAtPoint(e.getPoint());
-					System.out.println(tableRow);
-				}
-				if (e.getButton() == MouseEvent.BUTTON3) {
-					// RIGHT MOUSE CLICKED
-					int tableRow = tblCodeElementsList.rowAtPoint(e.getPoint());
-					System.out.println(tableRow);
-				}
-			}
-		});
 		makeFace(tblCodeElementsList);
 		scrollPane.setViewportView(tblCodeElementsList);
 
@@ -291,9 +319,13 @@ public class MaintainerWin {
 					}
 				}
 				if (e.getButton() == MouseEvent.BUTTON3) {
-					// RIGHT MOUSE CLICKED
-					int tableRow = tblReqElementsList.rowAtPoint(e.getPoint());
-					System.out.println(tableRow);
+					int focusedRowIndex = tblReqElementsList.rowAtPoint(e.getPoint());
+		            if (focusedRowIndex == -1) {
+		                return;
+		            }
+		            row = focusedRowIndex;
+		            tblReqElementsList.setRowSelectionInterval(focusedRowIndex, focusedRowIndex);
+		            m_popupMenu.show(tblReqElementsList, e.getX(), e.getY());
 				}
 			}
 		});
