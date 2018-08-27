@@ -54,7 +54,7 @@ public class MaintainerWin {
 	private JFrame frmRequirementsUpdate;
 	private JTable tblCodeElementsList;
 	private JTable tblReqElementsList;
-	private JTable table_3;
+	private JTable tableRecommendMethods;
 	private String[] codeColumns;
 	private Object[][] codeElementsList;
 	private String[] reqColumn;
@@ -98,22 +98,22 @@ public class MaintainerWin {
 		frmRequirementsUpdate.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmRequirementsUpdate.getContentPane().setLayout(null);
 
-		JPanel panel = new JPanel();
-		panel.setBounds(6, 6, 407, 28);
-		frmRequirementsUpdate.getContentPane().add(panel);
+		JPanel panelDifferingCodeElements = new JPanel();
+		panelDifferingCodeElements.setBounds(6, 6, 407, 28);
+		frmRequirementsUpdate.getContentPane().add(panelDifferingCodeElements);
 
 		JLabel lblDifferingCodeElements = new JLabel("Differing Code Elements");
-		panel.add(lblDifferingCodeElements);
+		panelDifferingCodeElements.add(lblDifferingCodeElements);
 
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(423, 6, 371, 28);
-		frmRequirementsUpdate.getContentPane().add(panel_1);
+		JPanel panelReqElements = new JPanel();
+		panelReqElements.setBounds(423, 6, 371, 28);
+		frmRequirementsUpdate.getContentPane().add(panelReqElements);
 
-		JLabel lblNewLabel = new JLabel("Requirement Elements");
-		panel_1.add(lblNewLabel);
+		JLabel lblReqElements = new JLabel("Requirement Elements");
+		panelReqElements.add(lblReqElements);
 
 		JScrollPane scrollPaneReq = new JScrollPane();
-		scrollPaneReq.setBounds(423, 285, 371, 110);
+		scrollPaneReq.setBounds(423, 257, 371, 138);
 		frmRequirementsUpdate.getContentPane().add(scrollPaneReq);
 
 		JTextArea textAreaReqText = new JTextArea();
@@ -124,36 +124,36 @@ public class MaintainerWin {
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);  
 		scrollPaneReq.setViewportView(textAreaReqText);
 
-		JPanel panel_4 = new JPanel();
-		panel_4.setBounds(423, 407, 371, 26);
-		frmRequirementsUpdate.getContentPane().add(panel_4);
+		JPanel panelUpdateInfo = new JPanel();
+		panelUpdateInfo.setBounds(423, 407, 371, 26);
+		frmRequirementsUpdate.getContentPane().add(panelUpdateInfo);
 
 		JLabel lblUpdateInfo = new JLabel("Update Info");
-		panel_4.add(lblUpdateInfo);
+		panelUpdateInfo.add(lblUpdateInfo);
 
-		JScrollPane scrollPane_4 = new JScrollPane();
-		scrollPane_4.setEnabled(false);
-		scrollPane_4.setBounds(423, 433, 371, 142);
-		frmRequirementsUpdate.getContentPane().add(scrollPane_4);
+		JScrollPane scrollPaneUpdateInfo = new JScrollPane();
+		scrollPaneUpdateInfo.setEnabled(false);
+		scrollPaneUpdateInfo.setBounds(423, 433, 371, 142);
+		frmRequirementsUpdate.getContentPane().add(scrollPaneUpdateInfo);
 
 		JTextArea textAreaUpdateInfo = new JTextArea();
 		textAreaUpdateInfo.setEditable(false);
 		textAreaUpdateInfo.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		textAreaUpdateInfo.setLineWrap(true);
 		textAreaUpdateInfo.setText("Please mark the outdated requirments then you can edit update information here.");
-		scrollPane_4.setViewportView(textAreaUpdateInfo);
+		scrollPaneUpdateInfo.setViewportView(textAreaUpdateInfo);
 
-		JPanel panel_5 = new JPanel();
-		panel_5.setBounds(423, 574, 371, 43);
-		frmRequirementsUpdate.getContentPane().add(panel_5);
+		JPanel panelSave = new JPanel();
+		panelSave.setBounds(423, 574, 371, 43);
+		frmRequirementsUpdate.getContentPane().add(panelSave);
 
 		JButton btnSave = new JButton("Save");
 		btnSave.setEnabled(false);
-		panel_5.add(btnSave);
+		panelSave.add(btnSave);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(6, 35, 407, 223);
-		frmRequirementsUpdate.getContentPane().add(scrollPane);
+		JScrollPane scrollPaneCodeElementsList = new JScrollPane();
+		scrollPaneCodeElementsList.setBounds(6, 35, 407, 185);
+		frmRequirementsUpdate.getContentPane().add(scrollPaneCodeElementsList);
 
 		codeColumns = new String[] { "No", "Id", "Type", "Changed" };
 		// codeElementsList = new Object[4][4];
@@ -191,7 +191,7 @@ public class MaintainerWin {
 			}
 		});
 		makeFace(tblCodeElementsList);
-		scrollPane.setViewportView(tblCodeElementsList);
+		scrollPaneCodeElementsList.setViewportView(tblCodeElementsList);
 
 		idx = 1;
 		reqColumn = new String[] { "No", "Score", "Id", "Status" };
@@ -206,13 +206,13 @@ public class MaintainerWin {
 			reqElementsList[i] = data.get(i);
 		}
 
-		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(6, 435, 407, 140);
-		frmRequirementsUpdate.getContentPane().add(scrollPane_2);
+		JScrollPane scrollPaneRecommendMethods = new JScrollPane();
+		scrollPaneRecommendMethods.setBounds(6, 257, 407, 140);
+		frmRequirementsUpdate.getContentPane().add(scrollPaneRecommendMethods);
 
 		String[] names_3 = { "No", "Id" };
-		table_3 = new JTable(new Object[][] {}, names_3);
-		table_3.addMouseListener(new MouseAdapter() {
+		tableRecommendMethods = new JTable(new Object[][] {}, names_3);
+		tableRecommendMethods.addMouseListener(new MouseAdapter() {
 			/*
 			 * modified by YHR 表格接收鼠标左、右键点击事件
 			 */
@@ -220,7 +220,7 @@ public class MaintainerWin {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					// LEFT MOUSE CLICKED
-					int tableRow = table_3.rowAtPoint(e.getPoint());
+					int tableRow = tableRecommendMethods.rowAtPoint(e.getPoint());
 					System.out.println(tableRow);
 				}
 				if (e.getButton() == MouseEvent.BUTTON3) {
@@ -228,36 +228,29 @@ public class MaintainerWin {
 				}
 			}
 		});
-		makeFace(table_3);
-		scrollPane_2.setViewportView(table_3);
+		makeFace(tableRecommendMethods);
+		scrollPaneRecommendMethods.setViewportView(tableRecommendMethods);
 
-		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(6, 407, 407, 168);
-		frmRequirementsUpdate.getContentPane().add(panel_2);
+		JPanel panelRecomendMethods = new JPanel();
+		panelRecomendMethods.setBounds(6, 232, 407, 163);
+		frmRequirementsUpdate.getContentPane().add(panelRecomendMethods);
 
-		JLabel lblRecomand = new JLabel("Recommend Method");
-		panel_2.add(lblRecomand);
+		JLabel lblRecomendMethods = new JLabel("Recommend Methods");
+		panelRecomendMethods.add(lblRecomendMethods);
 
-		JPanel panel_6 = new JPanel();
-		panel_6.setBounds(6, 257, 407, 28);
-		frmRequirementsUpdate.getContentPane().add(panel_6);
+		JScrollPane scrollPaneMethodContent = new JScrollPane();
+		scrollPaneMethodContent.setBounds(6, 433, 407, 142);
+		frmRequirementsUpdate.getContentPane().add(scrollPaneMethodContent);
 
-		JLabel lblMethodContent = new JLabel("Method Content");
-		panel_6.add(lblMethodContent);
+		JTextArea textAreaMethodContent = new JTextArea();
+		textAreaMethodContent.setEditable(false);
+		textAreaMethodContent.setLineWrap(true);
+		textAreaMethodContent.setBackground(Color.WHITE);
+		scrollPaneMethodContent.setViewportView(textAreaMethodContent);
 
-		JScrollPane scrollPane_5 = new JScrollPane();
-		scrollPane_5.setBounds(6, 285, 407, 110);
-		frmRequirementsUpdate.getContentPane().add(scrollPane_5);
-
-		JTextArea textArea = new JTextArea();
-		textArea.setEditable(false);
-		textArea.setLineWrap(true);
-		textArea.setBackground(Color.WHITE);
-		scrollPane_5.setViewportView(textArea);
-
-		JScrollPane scrollPane_1_1 = new JScrollPane();
-		scrollPane_1_1.setBounds(423, 35, 371, 223);
-		frmRequirementsUpdate.getContentPane().add(scrollPane_1_1);
+		JScrollPane scrollPaneReqElementsList = new JScrollPane();
+		scrollPaneReqElementsList.setBounds(423, 35, 371, 185);
+		frmRequirementsUpdate.getContentPane().add(scrollPaneReqElementsList);
 		tblReqElementsList = new JTable(reqElementsList, reqColumn);
 		tblReqElementsList.addMouseListener(new MouseAdapter() {
 			private int previousSelectRow;
@@ -298,14 +291,21 @@ public class MaintainerWin {
 			}
 		});
 		makeFace(tblReqElementsList);
-		scrollPane_1_1.setViewportView(tblReqElementsList);
+		scrollPaneReqElementsList.setViewportView(tblReqElementsList);
 
-		JPanel panel_3 = new JPanel();
-		panel_3.setBounds(423, 257, 371, 28);
-		frmRequirementsUpdate.getContentPane().add(panel_3);
+		JPanel panelRequirmentsText = new JPanel();
+		panelRequirmentsText.setBounds(423, 232, 371, 28);
+		frmRequirementsUpdate.getContentPane().add(panelRequirmentsText);
 
 		JLabel lblRequirmentsText = new JLabel("Requirements Text");
-		panel_3.add(lblRequirmentsText);
+		panelRequirmentsText.add(lblRequirmentsText);
+		
+				JPanel panelMethodContent = new JPanel();
+				panelMethodContent.setBounds(6, 407, 407, 28);
+				frmRequirementsUpdate.getContentPane().add(panelMethodContent);
+				
+						JLabel lblMethodContent = new JLabel("Method Content");
+						panelMethodContent.add(lblMethodContent);
 		frmRequirementsUpdate.setVisible(true);
 	}
 
