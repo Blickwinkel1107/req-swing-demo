@@ -14,7 +14,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import edu.nju.cs.inform.core.type.CodeElementChange;
 import retro.Retro;
+import java.awt.Font;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class MaintainerWin {
 
@@ -40,35 +44,18 @@ public class MaintainerWin {
 		   }
 		}
 
-	private JFrame frame;
-	private JTable table_1;
-	private JTable table_2;
+	private JFrame frmRequirementsUpdate;
+	private JTable tblCodeElementsList;
+	private JTable tblReqElementsList;
 	private JTable table_3;
+	private String[] codeColumns;
+	private Object[][] codeElementsList;
+	private String[] reqColumn;
 
-	/*
-	 * modified by YHR
-	 */
-	private String path_old;
-	private String path_new;
-	private String path_req;
-	
 	public Retro retro;
-
-	protected void setPath_old(String path_old){
-		this.path_old = path_old;
-	}
-
-	protected void setPath_new(String path_new){
-		this.path_new = path_new;
-	}
-
-	protected void setPath_req(String path_req){
-		this.path_req = path_req;
-	}
+	private JScrollPane scrollPane_1;
+	private Object[][] reqElementsList;
 	
-	protected void setRetro(Retro retro){
-		this.retro = retro;
-	}
 
 	/**
 	 * Launch the application.
@@ -77,8 +64,8 @@ public class MaintainerWin {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MaintainerWin window = new MaintainerWin();
-					window.frame.setVisible(true);
+					MaintainerWin window = new MaintainerWin(null);
+					window.frmRequirementsUpdate.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -89,7 +76,8 @@ public class MaintainerWin {
 	/**
 	 * Create the application.
 	 */
-	public MaintainerWin() {
+	public MaintainerWin(Retro retro) {
+		this.retro = retro;
 		initialize();
 	}
 
@@ -97,50 +85,53 @@ public class MaintainerWin {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 800, 645);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmRequirementsUpdate = new JFrame();
+		frmRequirementsUpdate.setTitle("Requirements update - maintainer");
+		frmRequirementsUpdate.setBounds(100, 100, 836, 663);
+		frmRequirementsUpdate.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmRequirementsUpdate.getContentPane().setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(6, 6, 343, 28);
-		frame.getContentPane().add(panel);
+		panel.setBounds(6, 6, 407, 28);
+		frmRequirementsUpdate.getContentPane().add(panel);
 
 		JLabel lblDifferingCodeElements = new JLabel("Differing Code Elements");
 		panel.add(lblDifferingCodeElements);
 
+		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(423, 6, 371, 28);
-		frame.getContentPane().add(panel_1);
+		frmRequirementsUpdate.getContentPane().add(panel_1);
 
 		JLabel lblNewLabel = new JLabel("Requirement Elements");
 		panel_1.add(lblNewLabel);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(6, 257, 343, 28);
-		frame.getContentPane().add(panel_2);
+		panel_2.setBounds(6, 257, 407, 28);
+		frmRequirementsUpdate.getContentPane().add(panel_2);
 
 		JLabel lblRecomand = new JLabel("Recommend Method");
 		panel_2.add(lblRecomand);
 
 		JPanel panel_3 = new JPanel();
 		panel_3.setBounds(423, 257, 371, 28);
-		frame.getContentPane().add(panel_3);
+		frmRequirementsUpdate.getContentPane().add(panel_3);
 
 		JLabel lblRequirmentsText = new JLabel("Requirements Text");
 		panel_3.add(lblRequirmentsText);
 
 		JScrollPane scrollPane_3 = new JScrollPane();
 		scrollPane_3.setBounds(423, 285, 371, 110);
-		frame.getContentPane().add(scrollPane_3);
+		frmRequirementsUpdate.getContentPane().add(scrollPane_3);
 
-		JTextArea textArea = new JTextArea();
-		textArea.setBackground(Color.WHITE);
-		scrollPane_3.setViewportView(textArea);
+		JTextArea textAreaReqText = new JTextArea();
+		textAreaReqText.setLineWrap(true);
+		textAreaReqText.setBackground(Color.WHITE);
+		scrollPane_3.setViewportView(textAreaReqText);
 
 		JPanel panel_4 = new JPanel();
 		panel_4.setBounds(423, 407, 371, 26);
-		frame.getContentPane().add(panel_4);
+		frmRequirementsUpdate.getContentPane().add(panel_4);
 
 				JTextArea textArea_1 = new JTextArea();
 				panel_4.add(textArea_1);
@@ -150,49 +141,86 @@ public class MaintainerWin {
 		panel_4.add(lblUpdateInfo);
 
 		JScrollPane scrollPane_4 = new JScrollPane();
+		scrollPane_4.setEnabled(false);
 		scrollPane_4.setBounds(423, 433, 371, 142);
-		frame.getContentPane().add(scrollPane_4);
+		frmRequirementsUpdate.getContentPane().add(scrollPane_4);
+		
+		JTextArea textAreaUpdateInfo = new JTextArea();
+		textAreaUpdateInfo.setEditable(false);
+		textAreaUpdateInfo.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		textAreaUpdateInfo.setLineWrap(true);
+		textAreaUpdateInfo.setText("Please mark the outdated requirments then you can edit update information here.");
+		scrollPane_4.setViewportView(textAreaUpdateInfo);
 
 		JPanel panel_5 = new JPanel();
 		panel_5.setBounds(423, 574, 371, 43);
-		frame.getContentPane().add(panel_5);
+		frmRequirementsUpdate.getContentPane().add(panel_5);
 
 		JButton btnSave = new JButton("Save");
+		btnSave.setEnabled(false);
 		panel_5.add(btnSave);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(6, 35, 343, 223);
-		frame.getContentPane().add(scrollPane);
+		scrollPane.setBounds(6, 35, 407, 223);
+		frmRequirementsUpdate.getContentPane().add(scrollPane);
 
-		Object[][] playerInfo = {
-	            // 鍒涘缓琛ㄦ牸涓殑鏁版嵁
-	            { "", "", "", ""},
-	            { "", "", "", ""},
-	            { "", "", "", ""},
-	            { "", "", "", ""},
-	            { "", "", "", ""}};
-		String[] names_1 = { "No", "Id", "Type", "Changed"};
-		table_1 = new JTable(playerInfo, names_1);
-		makeFace(table_1);
-		scrollPane.setViewportView(table_1);
+		codeColumns = new String[]{ "No", "Id", "Type", "Changed"};
+		//codeElementsList = new Object[4][4];
+		int idx;
+		ArrayList<Object[]> data; 
+		data = new ArrayList<Object[]>();
+		idx = 1;
+		for (CodeElementChange elementChange : retro.codeElementChangeList) {
+			data.add(new String[]{
+				idx + "",
+				elementChange.getElementName().toString(),
+				elementChange.getElementType().toString(),
+				elementChange.getChangeType().toString()
+				});
+			++idx;
+        }
+		codeElementsList = new Object[data.size()][4];
+		for(int i = 0; i < data.size(); ++i){
+			codeElementsList[i] = data.get(i);
+		}
+		tblCodeElementsList = new JTable(codeElementsList, codeColumns);
+		makeFace(tblCodeElementsList);
+		scrollPane.setViewportView(tblCodeElementsList);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(423, 35, 371, 223);
-		frame.getContentPane().add(scrollPane_1);
-
-		String[] names_2 = {"No", "Score", "Id", "Status"};
-		table_2 = new JTable(playerInfo, names_2);
-		makeFace(table_2);
-		scrollPane_1.setViewportView(table_2);
+		frmRequirementsUpdate.getContentPane().add(scrollPane_1);
+		
+		idx = 1;
+		reqColumn = new String[]{"No", "Score", "Id", "Status"};
+		data = new ArrayList<Object[]>();
+		idx = 1;
+		for (Map.Entry<String, Double> map : retro.reqElementList) {
+			data.add(new String[]{
+				idx + "",
+				String.valueOf(map.getValue()),
+				map.getKey(),
+				"Normal"
+				});
+			++idx;
+        }
+		reqElementsList = new Object[data.size()][4];
+		for(int i = 0; i < data.size(); ++i){
+			reqElementsList[i] = data.get(i);
+		}
+		tblReqElementsList = new JTable(reqElementsList, reqColumn);
+		makeFace(tblReqElementsList);
+		scrollPane_1.setViewportView(tblReqElementsList);
 
 		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(6, 285, 343, 110);
-		frame.getContentPane().add(scrollPane_2);
+		scrollPane_2.setBounds(6, 285, 407, 110);
+		frmRequirementsUpdate.getContentPane().add(scrollPane_2);
 
 		String[] names_3 = {"No", "Id"};
-		table_3 = new JTable(playerInfo, names_3);
+		table_3 = new JTable(new Object[][]{}, names_3);
 		makeFace(table_3);
 		scrollPane_2.setViewportView(table_3);
-		frame.setVisible(true);
+		frmRequirementsUpdate.setVisible(true);
 	}
+	
 }

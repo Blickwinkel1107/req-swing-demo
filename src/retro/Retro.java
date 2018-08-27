@@ -113,7 +113,6 @@ public class Retro {
         Map<String, Double> candidatedOutdatedRequirementsRank = retrieval.getCandidateOutdatedRequirementsRank();
         //将map转换成list
         List<Map.Entry<String, Double>> list = new ArrayList<>(candidatedOutdatedRequirementsRank.entrySet());
-        this.reqElementList = list;
         Collections.sort(list, new Comparator<Map.Entry<String, Double>>() {
             @Override
             //降序排列
@@ -121,6 +120,7 @@ public class Retro {
                 return o2.getValue().compareTo(o1.getValue());
             }
         });
+        this.reqElementList = list;
 
         int index = 0;
         for (Map.Entry<String, Double> map : list) {

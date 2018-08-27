@@ -141,8 +141,7 @@ public class SelectFiles {
 					//re.process();
 					re.processTest(oldVerPath, newVerPath, reqPath);
 					
-					MaintainerWin maintainer = new MaintainerWin();
-					maintainer.setRetro(re);
+					new MaintainerWin(re);
 					//retriever.close();
 					frmSelectFilesPath.dispose();
 					
