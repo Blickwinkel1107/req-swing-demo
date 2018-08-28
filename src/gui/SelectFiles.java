@@ -120,9 +120,9 @@ public class SelectFiles {
 					String newVerPath;
 					String reqPath;
 					if (textOldVersion.getText().equals("")) {
-						oldVerPath = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Change3";
-						newVerPath = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Change4";
-						reqPath = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Requirement";
+						oldVerPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change3";
+						newVerPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change4";
+						reqPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Requirement";
 					} else {
 						oldVerPath = textOldVersion.getText();
 						newVerPath = textNewVersion.getText();
@@ -216,7 +216,7 @@ public class SelectFiles {
 		});
 		button_1.setBounds(519, 96, 106, 25);
 		frmSelectFilesPath.getContentPane().add(button_1);
-		frmSelectFilesPath.setVisible(true); // 鏄剧ず绐�?�?
+		frmSelectFilesPath.setVisible(true); // 鏄剧ず绐�?�?
 	}
 
 	protected void setPath_old(String path_old) {

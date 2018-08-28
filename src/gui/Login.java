@@ -21,7 +21,7 @@ public class Login {
 	private JFrame frmLogIn;
 	private JTextField usernameField;
 	private JPasswordField passwordField;
-	private String username;
+	private static String userName;
 	private char[] password;
 
 	/**
@@ -38,6 +38,10 @@ public class Login {
 				}
 			}
 		});
+	}
+	
+	public static String getUserName() {
+		return userName;
 	}
 
 	/**
@@ -96,17 +100,17 @@ public class Login {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				username = usernameField.getText();
+				userName = usernameField.getText();
 				password = passwordField.getPassword();
-				System.out.println(username);
+				System.out.println(userName);
 				System.out.println(password);
-				if (username.equals("maintainer")) {
+				if (userName.equals("maintainer")) {
 				SelectFiles selectFiles = new SelectFiles();
-				selectFiles.setUsername(username);
+				selectFiles.setUsername(userName);
 				}
-				else if (username.equals("manager")) {
+				else if (userName.equals("manager")) {
 					SelectFiles_Manager selectFiles = new SelectFiles_Manager();
-					selectFiles.setUsername(username);
+					selectFiles.setUsername(userName);
 				}
 				frmLogIn.dispose();
 			}

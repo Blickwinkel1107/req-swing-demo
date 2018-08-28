@@ -7,7 +7,7 @@ import java.sql.*;
  * created by yx 将需求文本写入数据库
  */
 
-public class ReqImporter {
+public class ReqInitializer {
 	public static void main(String args[]) {
 		Connection c = null;
 		Statement stmt = null;

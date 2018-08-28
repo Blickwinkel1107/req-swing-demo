@@ -19,8 +19,11 @@ import javax.swing.text.DefaultCaret;
 
 import edu.nju.cs.inform.core.type.CodeElementChange;
 import retro.Retro;
+import sql.SqlExecuter;
+import gui.UpdateSaved;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.awt.event.MouseAdapter;
@@ -29,6 +32,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 
 public class MaintainerWin {
 
@@ -38,9 +42,9 @@ public class MaintainerWin {
 				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 						boolean hasFocus, int row, int column) {
 					if (row % 2 == 0)
-						setBackground(Color.white); // 璁剧疆濂囨暟琛屽簳鑹�?
+						setBackground(Color.white); // 璁剧疆濂囨暟琛屽簳鑹�?
 					else if (row % 2 == 1)
-						setBackground(new Color(206, 231, 255)); // 璁剧疆鍋舵暟琛屽簳鑹�?
+						setBackground(new Color(206, 231, 255)); // 璁剧疆鍋舵暟琛屽簳鑹�?
 					return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 				}
 			};
@@ -51,8 +55,6 @@ public class MaintainerWin {
 			ex.printStackTrace();
 		}
 	}
-	
-	
 
 	/*
 	 * modified by YHR
@@ -73,9 +75,14 @@ public class MaintainerWin {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				// System.out.print(Arrays.toString(reqElementsList[row]));
 				reqElementsList[row][3] = "Outdated";
+				
 				tblReqElementsList.updateUI();
 				textAreaUpdateInfo.setEditable(true);
 				textAreaUpdateInfo.setText("");
+				String reqName = String.valueOf(tblReqElementsList.getValueAt(row, 2));
+				System.out.println(reqName);
+				String sql = "UPDATE reqList SET status = \'Outdated\' WHERE id = \'" + reqName + "\';";
+				SqlExecuter.process(sql);
 			}
 		});
 		m_popupMenu.add(menItem_1);
@@ -90,10 +97,7 @@ public class MaintainerWin {
 				List<String> recommendList = retro.recommendMethodsForRequirements.get(req);
 				int index = 1;
 				for (String method : recommendList) {
-					data.add(new String[]{
-						index + "",
-						method
-					});
+					data.add(new String[] { index + "", method });
 					++index;
 				}
 				recommendMethodList = new Object[data.size()][2];
@@ -102,13 +106,15 @@ public class MaintainerWin {
 				}
 				tblRecommendMethods = new JTable(recommendMethodList, tblRecommendMethodsColumns);
 				tblRecommendMethods.addMouseListener(new MouseAdapter() {
-					private int previousSelectedRow;
+					private int previousSelectedRow = -1;
+
 					/*
-					 * modified by YHR 表格接收鼠标左�?�右键点击事�?
+					 * modified by YHR 表格接收鼠标左�?�右键点击事�?
 					 */
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						if (e.getButton() == MouseEvent.BUTTON1 && previousSelectedRow != tblRecommendMethods.rowAtPoint(e.getPoint())) {
+						if (e.getButton() == MouseEvent.BUTTON1
+								&& previousSelectedRow != tblRecommendMethods.rowAtPoint(e.getPoint())) {
 							// LEFT MOUSE CLICKED
 							int tableRow = tblRecommendMethods.rowAtPoint(e.getPoint());
 							previousSelectedRow = tableRow;
@@ -196,7 +202,7 @@ public class MaintainerWin {
 		frmRequirementsUpdate.getContentPane().add(scrollPaneReq);
 
 		textAreaReqText = new JTextArea();
-		textAreaReqText.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		textAreaReqText.setFont(new Font("Arial", Font.PLAIN, 13));
 		textAreaReqText.setWrapStyleWord(true);
 		textAreaReqText.setEditable(false);
 		textAreaReqText.setLineWrap(true);
@@ -230,7 +236,7 @@ public class MaintainerWin {
 			}
 		});
 		textAreaUpdateInfo.setEditable(false);
-		textAreaUpdateInfo.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		textAreaUpdateInfo.setFont(new Font("Arial", Font.PLAIN, 13));
 		textAreaUpdateInfo.setLineWrap(true);
 		textAreaUpdateInfo.setText("Please mark the outdated requirments then you can edit update information here.");
 		scrollPaneUpdateInfo.setViewportView(textAreaUpdateInfo);
@@ -240,6 +246,23 @@ public class MaintainerWin {
 		frmRequirementsUpdate.getContentPane().add(panelSave);
 
 		btnSave = new JButton("Save");
+		btnSave.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String updateInfo = textAreaUpdateInfo.getText();
+				boolean notEmpty = updateInfo.equals("") ? false : true;
+				new UpdateSaved(notEmpty);
+				if (notEmpty) {
+					String reqName = String.valueOf(tblReqElementsList.getValueAt(row, 2));
+					String sql = "UPDATE reqList SET pending = pending + 1 WHERE id = \'" + reqName + "\';";
+					SqlExecuter.process(sql);
+					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+					sql = "INSERT INTO logList VALUES(\'"+reqName+"\', \'"+df.format(new Date())+"\', \'"+Login.getUserName()+"\', \'"+updateInfo+"\')";
+					SqlExecuter.process(sql);
+				}
+				textAreaUpdateInfo.setText("");
+			}
+		});
 		btnSave.setEnabled(false);
 		panelSave.add(btnSave);
 
@@ -315,10 +338,10 @@ public class MaintainerWin {
 		frmRequirementsUpdate.getContentPane().add(scrollPaneReqElementsList);
 		tblReqElementsList = new JTable(reqElementsList, reqColumn);
 		tblReqElementsList.addMouseListener(new MouseAdapter() {
-			private int previousSelectRow;
+			private int previousSelectRow = -1;
 
 			/*
-			 * modified by YHR 表格接收鼠标左�?�右键点击事�?
+			 * modified by YHR 表格接收鼠标左�?�右键点击事�?
 			 */
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -326,11 +349,20 @@ public class MaintainerWin {
 					// LEFT MOUSE CLICKED
 					previousSelectRow = tblReqElementsList.getSelectedRow();
 					int tableRow = tblReqElementsList.getSelectedRow();
+					if(String.valueOf(tblReqElementsList.getValueAt(tableRow, 3)).equals("Normal")) {
+						textAreaUpdateInfo.setEditable(false);
+						textAreaUpdateInfo.setText("Please mark the outdated requirments then you can edit update information here.");
+						btnSave.setEnabled(false);
+					}
+					else {
+						textAreaUpdateInfo.setEditable(true);
+						textAreaUpdateInfo.setText("");
+					}
 					String reqName = String.valueOf(tblReqElementsList.getValueAt(tableRow, 2));
 					System.out.println(reqName);
 					try {
 						InputStream f = new FileInputStream("data/sample/AquaLush_Requirement_Origin/" + reqName);
-						byte[] b = new byte[1024];// 把所有的数据读取到这个字节当�?
+						byte[] b = new byte[1024];// 把所有的数据读取到这个字节当�?
 						f.read(b);
 						String str = new String(b);
 						str = str.trim();
