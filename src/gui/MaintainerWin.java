@@ -32,6 +32,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 
 public class MaintainerWin {
@@ -75,7 +80,7 @@ public class MaintainerWin {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				// System.out.print(Arrays.toString(reqElementsList[row]));
 				reqElementsList[row][3] = "Outdated";
-				
+
 				tblReqElementsList.updateUI();
 				textAreaUpdateInfo.setEditable(true);
 				textAreaUpdateInfo.setText("");
@@ -169,13 +174,21 @@ public class MaintainerWin {
 	 */
 	public MaintainerWin(Retro retro) {
 		this.retro = retro;
-		initialize();
+		try {
+			initialize();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize() throws SQLException, ClassNotFoundException {
 
 		frmRequirementsUpdate = new JFrame();
 		frmRequirementsUpdate.setTitle("Requirements update - maintainer");
@@ -257,7 +270,8 @@ public class MaintainerWin {
 					String sql = "UPDATE reqList SET pending = pending + 1 WHERE id = \'" + reqName + "\';";
 					SqlExecuter.process(sql);
 					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
-					sql = "INSERT INTO logList VALUES(\'"+reqName+"\', \'"+df.format(new Date())+"\', \'"+Login.getUserName()+"\', \'"+updateInfo+"\')";
+					sql = "INSERT INTO logList VALUES(\'" + reqName + "\', \'" + df.format(new Date()) + "\', \'"
+							+ Login.getUserName() + "\', \'" + updateInfo + "\')";
 					SqlExecuter.process(sql);
 				}
 				textAreaUpdateInfo.setText("");
@@ -294,10 +308,19 @@ public class MaintainerWin {
 		reqColumn = new String[] { "No", "Score", "Id", "Status" };
 		data = new ArrayList<Object[]>();
 		idx = 1;
+		Class.forName("org.sqlite.JDBC");
+		Connection c = DriverManager.getConnection("jdbc:sqlite::resource:sql/test.db");
+		c.setAutoCommit(false);
+		Statement stmt = c.createStatement();
+		ResultSet rs;
 		for (Map.Entry<String, Double> map : retro.reqElementList) {
-			data.add(new String[] { idx + "", String.valueOf(map.getValue()), map.getKey(), "Normal" });
+			String reqName = map.getKey();
+			rs = stmt.executeQuery("SELECT status FROM reqList WHERE id = \'"+reqName+"\';"); 
+			data.add(new String[] { idx + "", String.valueOf(map.getValue()), reqName, rs.getString(1)});
 			++idx;
 		}
+	    stmt.close();
+	    c.close();
 		reqElementsList = new Object[data.size()][4];
 		for (int i = 0; i < data.size(); ++i) {
 			reqElementsList[i] = data.get(i);
@@ -349,12 +372,12 @@ public class MaintainerWin {
 					// LEFT MOUSE CLICKED
 					previousSelectRow = tblReqElementsList.getSelectedRow();
 					int tableRow = tblReqElementsList.getSelectedRow();
-					if(String.valueOf(tblReqElementsList.getValueAt(tableRow, 3)).equals("Normal")) {
+					if (String.valueOf(tblReqElementsList.getValueAt(tableRow, 3)).equals("Normal")) {
 						textAreaUpdateInfo.setEditable(false);
-						textAreaUpdateInfo.setText("Please mark the outdated requirments then you can edit update information here.");
+						textAreaUpdateInfo.setText(
+								"Please mark the outdated requirments then you can edit update information here.");
 						btnSave.setEnabled(false);
-					}
-					else {
+					} else {
 						textAreaUpdateInfo.setEditable(true);
 						textAreaUpdateInfo.setText("");
 					}
