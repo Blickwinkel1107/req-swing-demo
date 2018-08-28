@@ -28,16 +28,10 @@ public class SelectFiles {
 	private String path_new;
 	private String path_req;
 	private String username;
-	private char[] password;
 	private static String MAINTAINER = "maintainer";
-	private static String MANAGER = "manager";
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	public void setPassword(char[] password) {
-		this.password = password;
 	}
 
 	/**
@@ -115,7 +109,6 @@ public class SelectFiles {
 				 * modified by YHR
 				 */
 				System.out.println(username);
-				System.out.println(password);
 				if (username.equals(MAINTAINER) == true) {
 					// System.out.println("fuck");
 					// yx: he xin dai ma :-)
@@ -125,9 +118,9 @@ public class SelectFiles {
 					String newVerPath;
 					String reqPath;
 					if (textOldVersion.getText().equals("")) {
-						oldVerPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change3";
-						newVerPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change4";
-						reqPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Requirement";
+						oldVerPath = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Change3";
+						newVerPath = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Change4";
+						reqPath = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Requirement";
 					} else {
 						oldVerPath = textOldVersion.getText();
 						newVerPath = textNewVersion.getText();
@@ -144,13 +137,7 @@ public class SelectFiles {
 					// retriever.close();
 					frmSelectFilesPath.dispose();
 
-				} else if (username.equals(MANAGER) == true) {
-					ManagerWin manager = new ManagerWin();
-					System.out.println("enter ManagerWin");
-					manager.setPath_old(path_old);
-					manager.setPath_new(path_new);
-					manager.setPath_req(path_req);
-				}
+				} 
 				frmSelectFilesPath.dispose();
 			}
 

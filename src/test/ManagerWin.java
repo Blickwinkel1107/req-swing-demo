@@ -17,24 +17,14 @@ import java.awt.event.MouseEvent;
 public class ManagerWin {
 
 	private JFrame frame;
-	private JTable table;
-	private JTable table_1;
+	private JTable reqElementsTable;
+	private JTable updateLogTable;
 	private MaintainerWin m;
 
 	/*
 	 * modified by YHR
 	 */
-	private String path_old;
-	private String path_new;
 	private String path_req;
-
-	protected void setPath_old(String path_old){
-		this.path_old = path_old;
-	}
-
-	protected void setPath_new(String path_new){
-		this.path_new = path_new;
-	}
 
 	protected void setPath_req(String path_req){
 		this.path_req = path_req;
@@ -91,8 +81,8 @@ public class ManagerWin {
 	            { "", "", "", ""},
 	            { "", "", "", ""}};
 		String[] names_1 = { "No", "Id", "Status", "Pending"};
-		table = new JTable(playerInfo, names_1);
-		table.addMouseListener(new MouseAdapter() {
+		reqElementsTable = new JTable(playerInfo, names_1);
+		reqElementsTable.addMouseListener(new MouseAdapter() {
 			/*
 			 modified by YHR
 			 表格接收鼠标左、右键点击事件
@@ -101,16 +91,13 @@ public class ManagerWin {
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1){
 					//LEFT MOUSE CLICKED
-					int tableRow = table.rowAtPoint(e.getPoint());
+					int tableRow = reqElementsTable.rowAtPoint(e.getPoint());
 					System.out.print(tableRow);
-				}
-				if(e.getButton() == MouseEvent.BUTTON3) {
-					//RIGHT MOUSE CLICKED
 				}
 			}	
 		});
-		m.makeFace(table);
-		scrollPane.setViewportView(table);
+		m.makeFace(reqElementsTable);
+		scrollPane.setViewportView(reqElementsTable);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(424, 6, 370, 26);
@@ -124,8 +111,8 @@ public class ManagerWin {
 		frame.getContentPane().add(scrollPane_1);
 
 		String[] names_2 = { "No", "CommitId", "Author"};
-		table_1 = new JTable(playerInfo, names_2);
-		table_1.addMouseListener(new MouseAdapter() {
+		updateLogTable = new JTable(playerInfo, names_2);
+		updateLogTable.addMouseListener(new MouseAdapter() {
 			/*
 			 modified by YHR
 			 表格接收鼠标左、右键点击事件
@@ -134,16 +121,13 @@ public class ManagerWin {
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1){
 					//LEFT MOUSE CLICKED
-					int tableRow = table_1.rowAtPoint(e.getPoint());
+					int tableRow = updateLogTable.rowAtPoint(e.getPoint());
 					System.out.print(tableRow);
-				}
-				if(e.getButton() == MouseEvent.BUTTON3) {
-					//RIGHT MOUSE CLICKED
 				}
 			}	
 		});
-		m.makeFace(table_1);
-		scrollPane_1.setViewportView(table_1);
+		m.makeFace(updateLogTable);
+		scrollPane_1.setViewportView(updateLogTable);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBounds(6, 222, 369, 26);
@@ -156,8 +140,8 @@ public class ManagerWin {
 		scrollPane_2.setBounds(6, 249, 369, 142);
 		frame.getContentPane().add(scrollPane_2);
 
-		JTextArea textArea = new JTextArea();
-		scrollPane_2.setViewportView(textArea);
+		JTextArea reqText = new JTextArea();
+		scrollPane_2.setViewportView(reqText);
 
 		JPanel panel_3 = new JPanel();
 		panel_3.setBounds(424, 222, 370, 26);
@@ -181,8 +165,8 @@ public class ManagerWin {
 		scrollPane_4.setBounds(6, 429, 369, 142);
 		frame.getContentPane().add(scrollPane_4);
 
-		JTextArea textArea_1 = new JTextArea();
-		scrollPane_4.setViewportView(textArea_1);
+		JTextArea updateReq = new JTextArea();
+		scrollPane_4.setViewportView(updateReq);
 
 		JPanel panel_5 = new JPanel();
 		panel_5.setBounds(6, 570, 369, 34);

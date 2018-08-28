@@ -99,14 +99,14 @@ public class Login {
 				password = passwordField.getPassword();
 				System.out.println(username);
 				System.out.println(password);
-				// MaintainerWin window = new MaintainerWin();
+				if (username.equals("maintainer")) {
 				SelectFiles selectFiles = new SelectFiles();
-				/*
-				 * modified by YHR
-				 */
 				selectFiles.setUsername(username);
-				selectFiles.setPassword(password);
-				// frame.setVisible(false);
+				}
+				else if (username.equals("manager")) {
+					SelectFiles_Manager selectFiles = new SelectFiles_Manager();
+					selectFiles.setUsername(username);
+				}
 				frmLogIn.dispose();
 			}
 		});
