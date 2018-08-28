@@ -8,8 +8,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 
 import gui.MaintainerWin;
-import gui.ManagerWin;
-
 import javax.swing.JLabel;
 
 import java.awt.event.MouseAdapter;
@@ -132,7 +130,7 @@ public class SelectFiles {
 					Retro re = new Retro();
 
 					// re.process();
-					re.processTest(newVerPath, oldVerPath, reqPath);
+					re.process(newVerPath, oldVerPath, reqPath);
 
 					MaintainerWin maintainer = new MaintainerWin(re);
 					maintainer.createPopupMenu();

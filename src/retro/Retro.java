@@ -23,6 +23,9 @@ public class Retro {
 	public Map<String, String> recommentMethodsBodyCollection;
 
 	public void process(String new_source_path, String old_source_path, String requirement_Path) {
+		this.new_source_path = new_source_path;
+		this.old_source_path = old_source_path;
+		this.requirement_Path = requirement_Path;
 		CodeElementsComparer comparer;
 		comparer = new CodeElementsComparer(new_source_path, old_source_path);
 		comparer.diff();
@@ -69,6 +72,7 @@ public class Retro {
 		String req = null;
 		do {
 			System.out.print("锟斤拷锟斤拷锟斤拷锟斤拷锟侥憋拷锟斤拷锟�(锟斤拷式锟斤拷SRSxxx)锟斤拷锟斤拷锟斤拷q锟剿筹拷锟斤拷");
+			@SuppressWarnings("resource")
 			Scanner scan = new Scanner(System.in);
 			req = scan.nextLine();
 			System.out.println("锟斤拷锟斤拷锟侥憋拷锟斤拷" + req);

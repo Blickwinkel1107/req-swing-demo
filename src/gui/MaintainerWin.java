@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -44,6 +45,8 @@ public class MaintainerWin {
 	public static void makeFace(JTable table) {
 		try {
 			DefaultTableCellRenderer tcr = new DefaultTableCellRenderer() {
+				private static final long serialVersionUID = 1L;
+
 				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 						boolean hasFocus, int row, int column) {
 					if (row % 2 == 0)
@@ -146,7 +149,6 @@ public class MaintainerWin {
 	private String[] reqColumn;
 
 	public Retro retro;
-	private JScrollPane scrollPane_1;
 	private Object[][] reqElementsList;
 	private String[] tblRecommendMethodsColumns;
 	private JScrollPane scrollPaneRecommendMethods;
@@ -384,7 +386,9 @@ public class MaintainerWin {
 					String reqName = String.valueOf(tblReqElementsList.getValueAt(tableRow, 2));
 					System.out.println(reqName);
 					try {
-						InputStream f = new FileInputStream("data/sample/AquaLush_Requirement_Origin/" + reqName);
+						File root = new File(retro.requirement_Path);
+						String originReqPath = root.getParentFile().getAbsolutePath() + "/AquaLush_Requirement_Origin/";
+						InputStream f = new FileInputStream(originReqPath + reqName);
 						byte[] b = new byte[1024];// 把所有的数据读取到这个字节当�?
 						f.read(b);
 						String str = new String(b);
