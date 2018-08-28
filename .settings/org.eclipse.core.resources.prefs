@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//src/gui/MaintainerWin.java=UTF-8
+encoding//src/gui/ManagerWin.java=UTF-8
+encoding//src/gui/SelectFiles.java=UTF-8
 encoding//src/retro/Retro.java=UTF-8
-encoding//src/test/MaintainerWin.java=UTF-8
-encoding//src/test/SelectFiles.java=UTF-8

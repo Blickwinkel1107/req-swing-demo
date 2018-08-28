@@ -35,5 +35,6 @@
 	<classpathentry kind="lib" path="lib/sqlite-jdbc-3.8.5-pre1.jar"/>
 	<classpathentry kind="lib" path="lib/stanford-corenlp-3.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/zip4j_1.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/sqlite-jdbc-3.23.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
