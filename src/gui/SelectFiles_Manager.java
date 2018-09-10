@@ -14,6 +14,23 @@ import javax.swing.JFileChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import javax.swing.JList;
+import javax.swing.JTree;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.event.MenuListener;
+
+import com.sun.xml.internal.ws.api.Component;
+
+import javax.swing.event.MenuEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import javax.swing.event.MenuKeyListener;
+import javax.swing.event.MenuKeyEvent;
 
 public class SelectFiles_Manager {
 
@@ -22,10 +39,17 @@ public class SelectFiles_Manager {
 	private String path_req;
 	private String username;
 	private static String MANAGER = "manager";
+	private JMenu mnSelectExistingProjects;
 
 	public void setUsername(String username) {
 		this.username = username;
 	}
+	
+	public void actionPerformed(ActionEvent e) {
+        if(e.getSource().getClass().equals(JMenuItem.class)){
+        	mnSelectExistingProjects.setText("×ãÇò");
+        }
+    }
 
 	/**
 	 * Launch the application.
@@ -55,18 +79,16 @@ public class SelectFiles_Manager {
 	 */
 	private void initialize() {
 		frmSelectFiles = new JFrame();
+		frmSelectFiles.setResizable(false);
 		frmSelectFiles.setTitle("Select Files");
-		frmSelectFiles.setBounds(100, 100, 468, 300);
+		frmSelectFiles.setBounds(100, 100, 489, 319);
 		frmSelectFiles.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSelectFiles.getContentPane().setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(6, 98, 438, 29);
+		panel.setBounds(22, 143, 438, 29);
 		frmSelectFiles.getContentPane().add(panel);
 		panel.setLayout(new BorderLayout(0, 0));
-
-		JLabel lblNewLabel = new JLabel("Requirement");
-		panel.add(lblNewLabel, BorderLayout.WEST);
 
 		textField = new JTextField();
 		panel.add(textField, BorderLayout.CENTER);
@@ -89,7 +111,7 @@ public class SelectFiles_Manager {
 		panel.add(btnSelectFiles, BorderLayout.EAST);
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(122, 166, 204, 38);
+		panel_1.setBounds(138, 184, 204, 38);
 		frmSelectFiles.getContentPane().add(panel_1);
 
 		JButton btnConfirm = new JButton("confirm");
@@ -121,6 +143,39 @@ public class SelectFiles_Manager {
 			}
 		});
 		panel_1.add(btnConfirm);
+		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBounds(22, 76, 89, 25);
+		frmSelectFiles.getContentPane().add(menuBar);
+		
+		mnSelectExistingProjects = new JMenu("Project name");
+		menuBar.add(mnSelectExistingProjects);
+		
+		JMenuItem mntmAqualush = new JMenuItem("Aqualush");
+		mnSelectExistingProjects.add(mntmAqualush);
+		
+		JMenuItem mntmItrust = new JMenuItem("iTrust");
+		mnSelectExistingProjects.add(mntmItrust);
+		
+		JMenuItem mntmConnect = new JMenuItem("Connect");
+		mnSelectExistingProjects.add(mntmConnect);
+		
+		for(int i = 0; i < mnSelectExistingProjects.getMenuComponentCount(); ++i) {
+			JMenuItem item = mnSelectExistingProjects.getItem(i);
+			item.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent evt) {
+					mnSelectExistingProjects.setText(item.getText());
+				}
+			});
+		}
+		
+		JLabel lblNewLabel = new JLabel("... or enter requirement path below");
+		lblNewLabel.setBounds(22, 113, 221, 29);
+		frmSelectFiles.getContentPane().add(lblNewLabel);
+		
+		JLabel lblSelectExistingProject = new JLabel("Select existing project");
+		lblSelectExistingProject.setBounds(22, 35, 165, 29);
+		frmSelectFiles.getContentPane().add(lblSelectExistingProject);
 		frmSelectFiles.setVisible(true);
 	}
 }
