@@ -104,11 +104,11 @@ public class Login {
 				password = passwordField.getPassword();
 				System.out.println(userName);
 				System.out.println(password);
-				if (userName.equals("maintainer")) {
+				if (!userName.equals("manager")) {
 				SelectFiles selectFiles = new SelectFiles();
 				selectFiles.setUsername(userName);
 				}
-				else if (userName.equals("manager")) {
+				else {
 					SelectFiles_Manager selectFiles = new SelectFiles_Manager();
 					selectFiles.setUsername(userName);
 				}

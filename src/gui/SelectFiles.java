@@ -109,35 +109,31 @@ public class SelectFiles {
 				 * modified by YHR
 				 */
 				System.out.println(username);
-				if (username.equals(MAINTAINER) == true) {
-					// System.out.println("fuck");
-					// yx: he xin dai ma :-)
-					System.out.println("enter MaintainerWin");
-					// frmSelectFilesPath.setVisible(false);
-					String oldVerPath;
-					String newVerPath;
-					String reqPath;
-					if (textOldVersion.getText().equals("")) {
-						oldVerPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change3";
-						newVerPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change4";
-						reqPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Requirement";
-					} else {
-						oldVerPath = textOldVersion.getText();
-						newVerPath = textNewVersion.getText();
-						reqPath = textReq.getText();
-					}
+				// System.out.println("fuck");
+				// yx: he xin dai ma :-)
+				System.out.println("enter MaintainerWin");
+				// frmSelectFilesPath.setVisible(false);
+				String oldVerPath;
+				String newVerPath;
+				String reqPath;
+				if (textOldVersion.getText().equals("")) {
+					oldVerPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change3";
+					newVerPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change4";
+					reqPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Requirement";
+				} else {
+					oldVerPath = textOldVersion.getText();
+					newVerPath = textNewVersion.getText();
+					reqPath = textReq.getText();
+				}
 
-					Retro re = new Retro();
+				Retro re = new Retro();
 
-					// re.process();
-					re.process(newVerPath, oldVerPath, reqPath);
+				// re.process();
+				re.process(newVerPath, oldVerPath, reqPath);
 
-					MaintainerWin maintainer = new MaintainerWin(re);
-					maintainer.createPopupMenu();
-					// retriever.close();
-					frmSelectFilesPath.dispose();
-
-				} 
+				MaintainerWin maintainer = new MaintainerWin(re);
+				maintainer.createPopupMenu();
+				// retriever.close();
 				frmSelectFilesPath.dispose();
 			}
 

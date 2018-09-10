@@ -69,8 +69,7 @@ public class MaintainerWin {
 	 */
 	private JPopupMenu m_popupMenu;
 	private int row;
-	private JTextArea textAreaUpdateInfo;
-	private JButton btnSave;
+	private JButton btnAddUpdateLog;
 	protected Object[][] recommendMethodList;
 
 	// the functions for the popup-menu
@@ -85,8 +84,9 @@ public class MaintainerWin {
 				reqElementsList[row][3] = "Outdated";
 
 				tblReqElementsList.updateUI();
-				textAreaUpdateInfo.setEditable(true);
-				textAreaUpdateInfo.setText("");
+				//textAreaUpdateInfo.setEditable(true);
+				//textAreaUpdateInfo.setText("");
+				btnAddUpdateLog.setEnabled(true);
 				String reqName = String.valueOf(tblReqElementsList.getValueAt(row, 2));
 				System.out.println(reqName);
 				String sql = "UPDATE reqList SET status = \'Outdated\' WHERE id = \'" + reqName + "\';";
@@ -96,13 +96,14 @@ public class MaintainerWin {
 		m_popupMenu.add(menItem_1);
 
 		JMenuItem menItem_2 = new JMenuItem();
-		menItem_2.setText("Methods recommand");
+		menItem_2.setText("Methods recommend");
 		menItem_2.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				// the function for 'Methods recommand'
-				String req = reqElementsList[row][2].toString();
+				String reqName = reqElementsList[row][2].toString();
+				lblRecomendMethods.setText("Recommend Methods for " + reqName); // change title
 				ArrayList<Object[]> data = new ArrayList<Object[]>();
-				List<String> recommendList = retro.recommendMethodsForRequirements.get(req);
+				List<String> recommendList = retro.recommendMethodsForRequirements.get(reqName);
 				int index = 1;
 				for (String method : recommendList) {
 					data.add(new String[] { index + "", method });
@@ -128,6 +129,7 @@ public class MaintainerWin {
 							previousSelectedRow = tableRow;
 							System.out.println(recommendMethodList[tableRow][1]);
 							String selectedMethod = recommendMethodList[tableRow][1].toString();
+							lblMethodContent.setText("Method Content -- " + selectedMethod); //change title
 							String methodBody = retro.recommentMethodsBodyCollection.get(selectedMethod);
 							textAreaMethodContent.setText(methodBody);
 						}
@@ -154,6 +156,12 @@ public class MaintainerWin {
 	private JScrollPane scrollPaneRecommendMethods;
 	private JTextArea textAreaReqText;
 	private JTextArea textAreaMethodContent;
+	private JTable tblUpdateLog;
+	private String[] updateLogColumns;
+	private JLabel lblRecomendMethods;
+	private JLabel lblRequirmentsText;
+	private JLabel lblMethodContent;
+	private JLabel lblUpdateLog;
 
 	/**
 	 * Launch the application.
@@ -226,42 +234,29 @@ public class MaintainerWin {
 		caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 		scrollPaneReq.setViewportView(textAreaReqText);
 
-		JPanel panelUpdateInfo = new JPanel();
-		panelUpdateInfo.setBounds(423, 407, 371, 26);
-		frmRequirementsUpdate.getContentPane().add(panelUpdateInfo);
+		JPanel panelUpdateLog = new JPanel();
+		panelUpdateLog.setBounds(423, 407, 371, 26);
+		frmRequirementsUpdate.getContentPane().add(panelUpdateLog);
 
-		JLabel lblUpdateInfo = new JLabel("Update Info");
-		panelUpdateInfo.add(lblUpdateInfo);
-
-		JScrollPane scrollPaneUpdateInfo = new JScrollPane();
-		scrollPaneUpdateInfo.setEnabled(false);
-		scrollPaneUpdateInfo.setBounds(423, 433, 371, 142);
-		frmRequirementsUpdate.getContentPane().add(scrollPaneUpdateInfo);
-
-		textAreaUpdateInfo = new JTextArea();
-		textAreaUpdateInfo.setWrapStyleWord(true);
-		textAreaUpdateInfo.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseExited(MouseEvent e) {
-				String content = textAreaUpdateInfo.getText();
-				if (!content.equals("") && !content
-						.equals("Please mark the outdated requirments then you can edit update information here.")) {
-					btnSave.setEnabled(true);
-				}
-			}
-		});
-		textAreaUpdateInfo.setEditable(false);
-		textAreaUpdateInfo.setFont(new Font("Arial", Font.PLAIN, 13));
-		textAreaUpdateInfo.setLineWrap(true);
-		textAreaUpdateInfo.setText("Please mark the outdated requirments then you can edit update information here.");
-		scrollPaneUpdateInfo.setViewportView(textAreaUpdateInfo);
+		lblUpdateLog = new JLabel("Update Log");
+		panelUpdateLog.add(lblUpdateLog);
+		
+		JScrollPane scrollPaneUpdateLogTable = new JScrollPane();
+		scrollPaneUpdateLogTable.setBounds(423, 433, 371, 142);
+		frmRequirementsUpdate.getContentPane().add(scrollPaneUpdateLogTable);
+		
+		
+		updateLogColumns = new String[] { "No", "Date", "Author"};
+		tblUpdateLog = new JTable(new Object[][] {}, updateLogColumns);
+		scrollPaneUpdateLogTable.setViewportView(tblUpdateLog);
 
 		JPanel panelSave = new JPanel();
 		panelSave.setBounds(423, 574, 371, 43);
 		frmRequirementsUpdate.getContentPane().add(panelSave);
 
-		btnSave = new JButton("Save");
-		btnSave.addMouseListener(new MouseAdapter() {
+		btnAddUpdateLog = new JButton("Add update log");
+		
+		/*btnAddUpdateLog.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				String updateInfo = textAreaUpdateInfo.getText();
@@ -278,9 +273,9 @@ public class MaintainerWin {
 				}
 				textAreaUpdateInfo.setText("");
 			}
-		});
-		btnSave.setEnabled(false);
-		panelSave.add(btnSave);
+		});*/
+		btnAddUpdateLog.setEnabled(false);
+		panelSave.add(btnAddUpdateLog);
 
 		JScrollPane scrollPaneCodeElementsList = new JScrollPane();
 		scrollPaneCodeElementsList.setBounds(6, 35, 407, 185);
@@ -341,7 +336,7 @@ public class MaintainerWin {
 		panelRecomendMethods.setBounds(6, 232, 407, 163);
 		frmRequirementsUpdate.getContentPane().add(panelRecomendMethods);
 
-		JLabel lblRecomendMethods = new JLabel("Recommend Methods");
+		lblRecomendMethods = new JLabel("Recommend Methods");
 		panelRecomendMethods.add(lblRecomendMethods);
 
 		JScrollPane scrollPaneMethodContent = new JScrollPane();
@@ -364,6 +359,7 @@ public class MaintainerWin {
 		tblReqElementsList = new JTable(reqElementsList, reqColumn);
 		tblReqElementsList.addMouseListener(new MouseAdapter() {
 			private int previousSelectRow = -1;
+			private Object[][] updateLogList;
 
 			/*
 			 * modified by YHR 表格接收鼠标左�?�右键点击事�?
@@ -374,16 +370,26 @@ public class MaintainerWin {
 					// LEFT MOUSE CLICKED
 					previousSelectRow = tblReqElementsList.getSelectedRow();
 					int tableRow = tblReqElementsList.getSelectedRow();
-					if (String.valueOf(tblReqElementsList.getValueAt(tableRow, 3)).equals("Normal")) {
+					boolean isNormal = String.valueOf(tblReqElementsList.getValueAt(tableRow, 3)).equals("Normal");
+					if(!isNormal)
+						btnAddUpdateLog.setEnabled(true);
+					else
+						btnAddUpdateLog.setEnabled(false);
+					/*if (isNormal) {
 						textAreaUpdateInfo.setEditable(false);
 						textAreaUpdateInfo.setText(
 								"Please mark the outdated requirments then you can edit update information here.");
-						btnSave.setEnabled(false);
+						btnAddUpdateLog.setEnabled(false);
 					} else {
 						textAreaUpdateInfo.setEditable(true);
 						textAreaUpdateInfo.setText("");
-					}
+					}*/
 					String reqName = String.valueOf(tblReqElementsList.getValueAt(tableRow, 2));
+					lblRequirmentsText.setText("Requirements Text for " + reqName); // change title
+					if(isNormal)
+						lblUpdateLog.setText(reqName + " is up-to-date"); // change title
+					else
+						lblUpdateLog.setText("Update Logs for " + reqName); // change title
 					System.out.println(reqName);
 					try {
 						File root = new File(retro.requirement_Path);
@@ -402,6 +408,47 @@ public class MaintainerWin {
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
+					ArrayList<Object[]> data;
+					data = new ArrayList<Object[]>();
+					int idx = 1;
+					try {
+						Class.forName("org.sqlite.JDBC");
+						Connection c = DriverManager.getConnection("jdbc:sqlite::resource:sql/test.db");
+						c.setAutoCommit(false);
+						Statement stmt = c.createStatement();
+						String sql = "SELECT * FROM logList WHERE id = \'"+reqName+"\' ORDER BY date DESC;";
+						System.out.println(sql);
+						ResultSet rs = stmt.executeQuery(sql);
+						while (rs.next()) {
+							data.add(new String[] { idx + "", rs.getString("date"), rs.getString("author"), rs.getString("content")});
+							++idx;
+						}
+					    stmt.close();
+					    c.close();
+					} catch (ClassNotFoundException | SQLException err) {
+						err.printStackTrace();
+					}
+					
+					updateLogList = new Object[data.size()][4];
+					for (int i = 0; i < data.size(); ++i) {
+						updateLogList[i] = data.get(i);
+					}
+					tblUpdateLog = new JTable(updateLogList, updateLogColumns);
+					tblUpdateLog.addMouseListener(new MouseAdapter() {
+						private int previousSelectedRow = -1;
+						@Override
+						public void mouseClicked(MouseEvent e) {
+							if (e.getButton() == MouseEvent.BUTTON1 && previousSelectedRow != tblUpdateLog.rowAtPoint(e.getPoint())) {
+								// LEFT MOUSE CLICKED
+								int tableRow = tblUpdateLog.rowAtPoint(e.getPoint());
+								previousSelectedRow = tableRow;
+								System.out.println(updateLogList[tableRow][1]);
+								String logContent = updateLogList[tableRow][3].toString();
+							}
+						}
+					});
+					MaintainerWin.makeFace(tblUpdateLog);
+					scrollPaneUpdateLogTable.setViewportView(tblUpdateLog);
 				}
 				if (e.getButton() == MouseEvent.BUTTON3) {
 					int focusedRowIndex = tblReqElementsList.rowAtPoint(e.getPoint());
@@ -421,16 +468,15 @@ public class MaintainerWin {
 		panelRequirmentsText.setBounds(423, 232, 371, 28);
 		frmRequirementsUpdate.getContentPane().add(panelRequirmentsText);
 
-		JLabel lblRequirmentsText = new JLabel("Requirements Text");
+		lblRequirmentsText = new JLabel("Requirements Text");
 		panelRequirmentsText.add(lblRequirmentsText);
 
 		JPanel panelMethodContent = new JPanel();
 		panelMethodContent.setBounds(6, 407, 407, 28);
 		frmRequirementsUpdate.getContentPane().add(panelMethodContent);
 
-		JLabel lblMethodContent = new JLabel("Method Content");
+		lblMethodContent = new JLabel("Method Content");
 		panelMethodContent.add(lblMethodContent);
 		frmRequirementsUpdate.setVisible(true);
 	}
-
 }

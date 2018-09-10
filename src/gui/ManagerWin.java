@@ -42,7 +42,7 @@ public class ManagerWin {
 	private String[] updateLogTableColumn;
 	private JTextArea textAreaUpdateInfo;
 	private JScrollPane scrollPaneUpdateInfo;
-	private JScrollPane scrollPaneUpdataLogTable;
+	private JScrollPane scrollPaneUpdateLogTable;
 
 	/**
 	 * Create the application.
@@ -168,7 +168,7 @@ public class ManagerWin {
 						}
 					});
 					MaintainerWin.makeFace(updateLogTable);
-					scrollPaneUpdataLogTable.setViewportView(updateLogTable);
+					scrollPaneUpdateLogTable.setViewportView(updateLogTable);
 				}
 			}	
 		});
@@ -182,9 +182,9 @@ public class ManagerWin {
 		JLabel lblUpdateLog = new JLabel("Update Log");
 		panel_1.add(lblUpdateLog);
 
-		scrollPaneUpdataLogTable = new JScrollPane();
-		scrollPaneUpdataLogTable.setBounds(424, 30, 370, 180);
-		frmRequirementsUpdate.getContentPane().add(scrollPaneUpdataLogTable);
+		scrollPaneUpdateLogTable = new JScrollPane();
+		scrollPaneUpdateLogTable.setBounds(424, 30, 370, 180);
+		frmRequirementsUpdate.getContentPane().add(scrollPaneUpdateLogTable);
 
 		updateLogTableColumn = new String[]{ "No", "Date", "Author"};
 		updateLogTable = new JTable(new Object[][] {}, updateLogTableColumn);
@@ -200,7 +200,7 @@ public class ManagerWin {
 			}	
 		});
 		MaintainerWin.makeFace(updateLogTable);
-		scrollPaneUpdataLogTable.setViewportView(updateLogTable);
+		scrollPaneUpdateLogTable.setViewportView(updateLogTable);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBounds(6, 222, 369, 26);
