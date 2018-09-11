@@ -117,9 +117,12 @@ public class SelectFiles {
 				String newVerPath;
 				String reqPath;
 				if (textOldVersion.getText().equals("")) {
-					oldVerPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change3";
-					newVerPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change4";
-					reqPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Requirement";
+					//oldVerPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change3";
+					//newVerPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Change4";
+					//reqPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Requirement";
+					oldVerPath = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Change3";
+					newVerPath = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Change4";
+					reqPath="/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Requirement";
 				} else {
 					oldVerPath = textOldVersion.getText();
 					newVerPath = textNewVersion.getText();

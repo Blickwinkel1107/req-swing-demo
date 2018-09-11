@@ -21,6 +21,8 @@ import edu.nju.cs.inform.core.type.CodeElementChange;
 import retro.Retro;
 import sql.SqlExecuter;
 import gui.UpdateSaved;
+import gui.UpdateLog_1;
+import gui.ShowLog_1;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Date;
@@ -162,6 +164,7 @@ public class MaintainerWin {
 	private JLabel lblRequirmentsText;
 	private JLabel lblMethodContent;
 	private JLabel lblUpdateLog;
+	public String logContent;
 
 	/**
 	 * Launch the application.
@@ -240,12 +243,12 @@ public class MaintainerWin {
 
 		lblUpdateLog = new JLabel("Update Log");
 		panelUpdateLog.add(lblUpdateLog);
-		
+
 		JScrollPane scrollPaneUpdateLogTable = new JScrollPane();
 		scrollPaneUpdateLogTable.setBounds(423, 433, 371, 142);
 		frmRequirementsUpdate.getContentPane().add(scrollPaneUpdateLogTable);
-		
-		
+
+
 		updateLogColumns = new String[] { "No", "Date", "Author"};
 		tblUpdateLog = new JTable(new Object[][] {}, updateLogColumns);
 		scrollPaneUpdateLogTable.setViewportView(tblUpdateLog);
@@ -255,7 +258,19 @@ public class MaintainerWin {
 		frmRequirementsUpdate.getContentPane().add(panelSave);
 
 		btnAddUpdateLog = new JButton("Add update log");
-		
+		btnAddUpdateLog.setBounds(21, 6, 140, 29);
+		btnAddUpdateLog.addMouseListener(new MouseAdapter() {
+			@Override
+			/*
+			 * (non-Javadoc)
+			 * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
+			 * modified by YHR
+			 */
+			public void mouseClicked(MouseEvent e) {
+				UpdateLog_1 pop_upUpdate = new UpdateLog_1();
+			}
+		});
+
 		/*btnAddUpdateLog.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -274,8 +289,21 @@ public class MaintainerWin {
 				textAreaUpdateInfo.setText("");
 			}
 		});*/
+		panelSave.setLayout(null);
 		btnAddUpdateLog.setEnabled(false);
 		panelSave.add(btnAddUpdateLog);
+
+		JButton btnShowLogInfo = new JButton("Show Log Info");
+		btnShowLogInfo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ShowLog_1 logInfo = new ShowLog_1(logContent);
+				//System.out.println(logContent);
+			}
+		});
+		btnShowLogInfo.setBounds(226, 6, 117, 29);
+		btnShowLogInfo.setEnabled(false);
+		panelSave.add(btnShowLogInfo);
 
 		JScrollPane scrollPaneCodeElementsList = new JScrollPane();
 		scrollPaneCodeElementsList.setBounds(6, 35, 407, 185);
@@ -312,7 +340,7 @@ public class MaintainerWin {
 		ResultSet rs;
 		for (Map.Entry<String, Double> map : retro.reqElementList) {
 			String reqName = map.getKey();
-			rs = stmt.executeQuery("SELECT status FROM reqList WHERE id = \'"+reqName+"\';"); 
+			rs = stmt.executeQuery("SELECT status FROM reqList WHERE id = \'"+reqName+"\';");
 			data.add(new String[] { idx + "", String.valueOf(map.getValue()), reqName, rs.getString(1)});
 			++idx;
 		}
@@ -371,8 +399,9 @@ public class MaintainerWin {
 					previousSelectRow = tblReqElementsList.getSelectedRow();
 					int tableRow = tblReqElementsList.getSelectedRow();
 					boolean isNormal = String.valueOf(tblReqElementsList.getValueAt(tableRow, 3)).equals("Normal");
-					if(!isNormal)
+					if(!isNormal){
 						btnAddUpdateLog.setEnabled(true);
+					}
 					else
 						btnAddUpdateLog.setEnabled(false);
 					/*if (isNormal) {
@@ -428,7 +457,7 @@ public class MaintainerWin {
 					} catch (ClassNotFoundException | SQLException err) {
 						err.printStackTrace();
 					}
-					
+
 					updateLogList = new Object[data.size()][4];
 					for (int i = 0; i < data.size(); ++i) {
 						updateLogList[i] = data.get(i);
@@ -442,8 +471,13 @@ public class MaintainerWin {
 								// LEFT MOUSE CLICKED
 								int tableRow = tblUpdateLog.rowAtPoint(e.getPoint());
 								previousSelectedRow = tableRow;
-								System.out.println(updateLogList[tableRow][1]);
-								String logContent = updateLogList[tableRow][3].toString();
+								//System.out.println(updateLogList[tableRow][1]);
+								logContent = updateLogList[tableRow][3].toString();
+								if (logContent.equals(""))
+									btnShowLogInfo.setEnabled(false);
+								else
+									btnShowLogInfo.setEnabled(true);
+								//System.out.println(logContent);
 							}
 						}
 					});
