@@ -10,7 +10,9 @@ import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class UpdateLog_1 {
+import gui.UpdateSaved;
+
+public class UpdateLog {
 
 	private JFrame frame;
 
@@ -21,7 +23,7 @@ public class UpdateLog_1 {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UpdateLog_1 window = new UpdateLog_1();
+					UpdateLog window = new UpdateLog();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -33,7 +35,7 @@ public class UpdateLog_1 {
 	/**
 	 * Create the application.
 	 */
-	public UpdateLog_1() {
+	public UpdateLog() {
 		initialize();
 	}
 
@@ -69,7 +71,13 @@ public class UpdateLog_1 {
 				/*
 				 * The 'save' function  would be inserted here.
 				 */
-				frame.dispose();
+				if(content.trim().equals("")) {
+					new UpdateSaved(false);
+				}
+				else {
+					new UpdateSaved(true);
+					frame.dispose();
+				}
 			}
 		});
 		btnSave.setBounds(49, 188, 117, 29);

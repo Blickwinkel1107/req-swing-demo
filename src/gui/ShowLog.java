@@ -12,11 +12,11 @@ import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class ShowLog_1 {
+public class ShowLog {
 
 	private JFrame frame;
 	private static String logContent;
-	private static ShowLog_1 window;
+	private static ShowLog window;
 
 	/**
 	 * Launch the application.
@@ -25,7 +25,7 @@ public class ShowLog_1 {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					window = new ShowLog_1(logContent);
+					window = new ShowLog(logContent);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -37,7 +37,7 @@ public class ShowLog_1 {
 	/**
 	 * Create the application.
 	 */
-	public ShowLog_1(String logContent) {
+	public ShowLog(String logContent) {
 		this.logContent = logContent;
 		initialize();
 	}

@@ -21,8 +21,8 @@ import edu.nju.cs.inform.core.type.CodeElementChange;
 import retro.Retro;
 import sql.SqlExecuter;
 import gui.UpdateSaved;
-import gui.UpdateLog_1;
-import gui.ShowLog_1;
+import gui.UpdateLog;
+import gui.ShowLog;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Date;
@@ -267,7 +267,7 @@ public class MaintainerWin {
 			 * modified by YHR
 			 */
 			public void mouseClicked(MouseEvent e) {
-				UpdateLog_1 pop_upUpdate = new UpdateLog_1();
+				UpdateLog pop_upUpdate = new UpdateLog();
 			}
 		});
 
@@ -297,7 +297,7 @@ public class MaintainerWin {
 		btnShowLogInfo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ShowLog_1 logInfo = new ShowLog_1(logContent);
+				ShowLog logInfo = new ShowLog(logContent);
 				//System.out.println(logContent);
 			}
 		});
