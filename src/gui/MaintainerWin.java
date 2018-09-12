@@ -206,7 +206,7 @@ public class MaintainerWin {
 		frmRequirementsUpdate = new JFrame();
 		frmRequirementsUpdate.setTitle("Requirements update - maintainer");
 		frmRequirementsUpdate.setBounds(100, 100, 836, 663);
-		frmRequirementsUpdate.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmRequirementsUpdate.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmRequirementsUpdate.getContentPane().setLayout(null);
 
 		JPanel panelDifferingCodeElements = new JPanel();

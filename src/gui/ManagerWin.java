@@ -63,7 +63,7 @@ public class ManagerWin {
 		frmRequirementsUpdate = new JFrame();
 		frmRequirementsUpdate.setTitle("Requirements update - manager");
 		frmRequirementsUpdate.setBounds(100, 100, 820, 645);
-		frmRequirementsUpdate.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmRequirementsUpdate.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmRequirementsUpdate.getContentPane().setLayout(null);
 
 		JPanel panel = new JPanel();

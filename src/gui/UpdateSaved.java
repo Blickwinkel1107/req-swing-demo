@@ -30,7 +30,7 @@ public class UpdateSaved {
 		frmNotice.setAlwaysOnTop(true);
 		frmNotice.setResizable(false);
 		frmNotice.setBounds(100, 100, 253, 155);
-		frmNotice.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmNotice.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmNotice.getContentPane().setLayout(null);
 		
 		JLabel lblUpdateSuccessfully;

@@ -82,7 +82,7 @@ public class SelectFiles_Manager {
 		frmSelectFiles.setResizable(false);
 		frmSelectFiles.setTitle("Select Files");
 		frmSelectFiles.setBounds(100, 100, 489, 319);
-		frmSelectFiles.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmSelectFiles.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmSelectFiles.getContentPane().setLayout(null);
 
 		JPanel panel = new JPanel();

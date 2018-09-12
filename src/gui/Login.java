@@ -58,7 +58,7 @@ public class Login {
 		frmLogIn = new JFrame();
 		frmLogIn.setTitle("Log in");
 		frmLogIn.setBounds(100, 100, 450, 300);
-		frmLogIn.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmLogIn.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmLogIn.getContentPane().setLayout(null);
 
 		JPanel panel = new JPanel();

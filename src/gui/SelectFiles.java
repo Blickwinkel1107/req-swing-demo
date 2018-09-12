@@ -69,7 +69,7 @@ public class SelectFiles {
 		frmSelectFilesPath = new JFrame();
 		frmSelectFilesPath.setTitle("Select files path");
 		frmSelectFilesPath.setBounds(100, 100, 655, 442);
-		frmSelectFilesPath.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmSelectFilesPath.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmSelectFilesPath.getContentPane().setLayout(null);
 
 		textOldVersion = new JTextField();
