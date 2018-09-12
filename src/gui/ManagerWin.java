@@ -11,6 +11,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 
 import gui.MaintainerWin;
+import sql.SqlExecuter;
 
 import javax.swing.JButton;
 
@@ -26,6 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.Font;
 import javax.swing.JTextField;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class ManagerWin {
 
@@ -43,11 +48,14 @@ public class ManagerWin {
 	private JTextArea textAreaUpdateInfo;
 	private JScrollPane scrollPaneUpdateInfo;
 	private JScrollPane scrollPaneUpdateLogTable;
-
+	private JButton btnSave;
+	private JTextArea updateReq;
+	private String reqName;
+	private int tableRow;
 	/**
 	 * Create the application.
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException 
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
 	 */
 	public ManagerWin(String reqPath) throws ClassNotFoundException, SQLException {
 		this.path_req = reqPath;
@@ -56,8 +64,8 @@ public class ManagerWin {
 
 	/**
 	 * Initialize the contents of the frame.
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException 
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
 	 */
 	private void initialize() throws SQLException, ClassNotFoundException {
 		frmRequirementsUpdate = new JFrame();
@@ -76,7 +84,7 @@ public class ManagerWin {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(6, 30, 369, 180);
 		frmRequirementsUpdate.getContentPane().add(scrollPane);
-		
+
 		ArrayList<Object[]> data;
 		data = new ArrayList<Object[]>();
 		reqColumns = new String[]{ "No", "Id", "Status", "Pending"};
@@ -105,9 +113,10 @@ public class ManagerWin {
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1 && previewSelectedRow != reqElementsTable.rowAtPoint(e.getPoint())){
 					//LEFT MOUSE CLICKED
-					int tableRow = reqElementsTable.rowAtPoint(e.getPoint());
+					updateReq.setEditable(true);
+					tableRow = reqElementsTable.rowAtPoint(e.getPoint());
 					System.out.println(tableRow);
-					String reqName = String.valueOf(reqElementsTable.getValueAt(tableRow, 1));
+					reqName = String.valueOf(reqElementsTable.getValueAt(tableRow, 1));
 					System.out.println(reqName);
 					try {
 						File root = new File(path_req);
@@ -147,7 +156,7 @@ public class ManagerWin {
 					} catch (ClassNotFoundException | SQLException err) {
 						err.printStackTrace();
 					}
-					
+
 					updateLogList = new Object[data.size()][4];
 					for (int i = 0; i < data.size(); ++i) {
 						updateLogList[i] = data.get(i);
@@ -170,7 +179,7 @@ public class ManagerWin {
 					MaintainerWin.makeFace(updateLogTable);
 					scrollPaneUpdateLogTable.setViewportView(updateLogTable);
 				}
-			}	
+			}
 		});
 		MaintainerWin.makeFace(reqElementsTable);
 		scrollPane.setViewportView(reqElementsTable);
@@ -197,7 +206,7 @@ public class ManagerWin {
 					int tableRow = updateLogTable.rowAtPoint(e.getPoint());
 					System.out.println(tableRow);
 				}
-			}	
+			}
 		});
 		MaintainerWin.makeFace(updateLogTable);
 		scrollPaneUpdateLogTable.setViewportView(updateLogTable);
@@ -229,7 +238,7 @@ public class ManagerWin {
 		scrollPaneUpdateInfo = new JScrollPane();
 		scrollPaneUpdateInfo.setBounds(424, 249, 370, 142);
 		frmRequirementsUpdate.getContentPane().add(scrollPaneUpdateInfo);
-		
+
 		textAreaUpdateInfo = new JTextArea();
 		textAreaUpdateInfo.setEditable(false);
 		textAreaUpdateInfo.setFont(new Font("Arial", Font.PLAIN, 13));
@@ -248,7 +257,19 @@ public class ManagerWin {
 		scrollPane_4.setBounds(6, 429, 369, 142);
 		frmRequirementsUpdate.getContentPane().add(scrollPane_4);
 
-		JTextArea updateReq = new JTextArea();
+		updateReq = new JTextArea();
+		updateReq.setEditable(false);
+		updateReq.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				System.out.println(updateReq.getText());
+				System.out.println(updateReq.getText().length());
+				if (updateReq.getText().length() != 0)
+					btnSave.setEnabled(true);
+				else
+					btnSave.setEnabled(false);
+			}
+		});
 		updateReq.setFont(new Font("Arial", Font.PLAIN, 13));
 		updateReq.setLineWrap(true);
 		updateReq.setWrapStyleWord(true);
@@ -258,7 +279,48 @@ public class ManagerWin {
 		panel_5.setBounds(6, 570, 369, 34);
 		frmRequirementsUpdate.getContentPane().add(panel_5);
 
-		JButton btnSave = new JButton("Save");
+		btnSave = new JButton("Save");
+		btnSave.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+						File root = new File(path_req);
+						String reqDocPath = root.getParentFile().getAbsolutePath() + "/AquaLush_Requirement_Origin/" + reqName;
+						System.out.print(reqDocPath);
+			            File writename = new File(reqDocPath); // 相对路径，如果没有则要建立一个新的output.txt文件
+			            writename.createNewFile(); // 创建新文件
+			            BufferedWriter out = new BufferedWriter(new FileWriter(writename));
+			            out.write(updateReq.getText());
+			            out.flush(); // 把缓存区内容压入文件
+			            out.close(); // 最后记得关闭文件
+			        } catch (IOException event) {
+			            event.printStackTrace();
+			        }
+				String sql = "UPDATE reqList SET status = 'Normal' WHERE id = \'" + reqName + "\';";
+				SqlExecuter.process(sql);
+				reqElementsList[tableRow][2] = "Outdated";
+				reqElementsTable.updateUI();
+				try {
+					File root = new File(path_req);
+					String originReqPath = root.getParentFile().getAbsolutePath() + "/AquaLush_Requirement_Origin/";
+					InputStream f = new FileInputStream(originReqPath + reqName);
+					byte[] b = new byte[1024];
+					f.read(b);
+					String str = new String(b);
+					str = str.trim();
+					reqText.setText(str);
+					reqText.setSelectionStart(0);
+					f.close();
+
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				updateReq.setText("");
+			}
+		});
+		btnSave.setEnabled(false);
 		panel_5.add(btnSave);
 		frmRequirementsUpdate.setVisible(true);
 	}
