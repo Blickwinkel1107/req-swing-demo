@@ -9,12 +9,16 @@ import javax.swing.JTextPane;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import gui.UpdateSaved;
+import sql.SqlExecuter;
 
 public class UpdateLog {
 
 	private JFrame frame;
+	public String reqName;
 
 	/**
 	 * Launch the application.
@@ -67,15 +71,17 @@ public class UpdateLog {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				String content = textPane.getText();
-				//System.out.println(content);
-				/*
-				 * The 'save' function  would be inserted here.
-				 */
-				if(content.trim().equals("")) {
+				System.out.println(content);
+				if(content.trim().equals(""))
 					new UpdateSaved(false);
-				}
 				else {
 					new UpdateSaved(true);
+					String sql = "UPDATE reqList SET pending = pending + 1 WHERE id = \'" + reqName + "\';";
+					SqlExecuter.process(sql);
+					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					sql = "INSERT INTO logList VALUES(\'" + reqName + "\', \'" + df.format(new Date()) + "\', \'"
+							+ Login.getUserName() + "\', \'" + content + "\')";
+					SqlExecuter.process(sql);
 					frame.dispose();
 				}
 			}

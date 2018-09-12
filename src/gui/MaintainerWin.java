@@ -41,6 +41,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MaintainerWin {
 
@@ -258,6 +260,10 @@ public class MaintainerWin {
 		frmRequirementsUpdate.getContentPane().add(panelSave);
 
 		btnAddUpdateLog = new JButton("Add update log");
+		btnAddUpdateLog.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnAddUpdateLog.setBounds(21, 6, 140, 29);
 		btnAddUpdateLog.addMouseListener(new MouseAdapter() {
 			@Override
@@ -268,6 +274,7 @@ public class MaintainerWin {
 			 */
 			public void mouseClicked(MouseEvent e) {
 				UpdateLog pop_upUpdate = new UpdateLog();
+				pop_upUpdate.reqName = lblUpdateLog.getText().split("for")[1].trim();
 			}
 		});
 
