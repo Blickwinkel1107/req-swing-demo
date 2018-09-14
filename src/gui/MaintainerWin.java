@@ -251,7 +251,7 @@ public class MaintainerWin {
 		frmRequirementsUpdate.getContentPane().add(scrollPaneUpdateLogTable);
 
 
-		updateLogColumns = new String[] { "No", "Date", "Author"};
+		updateLogColumns = new String[] { "No", "Date", "Author", "Status"};
 		tblUpdateLog = new JTable(new Object[][] {}, updateLogColumns);
 		scrollPaneUpdateLogTable.setViewportView(tblUpdateLog);
 
@@ -273,8 +273,8 @@ public class MaintainerWin {
 			 * modified by YHR
 			 */
 			public void mouseClicked(MouseEvent e) {
-				UpdateLog pop_upUpdate = new UpdateLog();
-				pop_upUpdate.reqName = lblUpdateLog.getText().split("for")[1].trim();
+				String reqName = lblUpdateLog.getText().split("for")[1].trim();
+				UpdateLog pop_upUpdate = new UpdateLog(reqName);
 			}
 		});
 
@@ -456,7 +456,7 @@ public class MaintainerWin {
 						System.out.println(sql);
 						ResultSet rs = stmt.executeQuery(sql);
 						while (rs.next()) {
-							data.add(new String[] { idx + "", rs.getString("date"), rs.getString("author"), rs.getString("content")});
+							data.add(new String[] { idx + "", rs.getString("date"), rs.getString("author"), rs.getString("status"), rs.getString("content")});
 							++idx;
 						}
 					    stmt.close();
@@ -465,7 +465,7 @@ public class MaintainerWin {
 						err.printStackTrace();
 					}
 
-					updateLogList = new Object[data.size()][4];
+					updateLogList = new Object[data.size()][5];
 					for (int i = 0; i < data.size(); ++i) {
 						updateLogList[i] = data.get(i);
 					}
@@ -479,7 +479,7 @@ public class MaintainerWin {
 								int tableRow = tblUpdateLog.rowAtPoint(e.getPoint());
 								previousSelectedRow = tableRow;
 								//System.out.println(updateLogList[tableRow][1]);
-								logContent = updateLogList[tableRow][3].toString();
+								logContent = updateLogList[tableRow][4].toString();
 								if (logContent.equals(""))
 									btnShowLogInfo.setEnabled(false);
 								else

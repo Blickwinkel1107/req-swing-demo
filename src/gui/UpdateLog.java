@@ -27,7 +27,7 @@ public class UpdateLog {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UpdateLog window = new UpdateLog();
+					UpdateLog window = new UpdateLog("");
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,7 +39,8 @@ public class UpdateLog {
 	/**
 	 * Create the application.
 	 */
-	public UpdateLog() {
+	public UpdateLog(String reqName) {
+		this.reqName = reqName;
 		initialize();
 	}
 
@@ -80,7 +81,7 @@ public class UpdateLog {
 					SqlExecuter.process(sql);
 					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					sql = "INSERT INTO logList VALUES(\'" + reqName + "\', \'" + df.format(new Date()) + "\', \'"
-							+ Login.getUserName() + "\', \'" + content + "\')";
+							+ Login.getUserName() + "\', \'" + content + "\', 'Unchecked')";
 					SqlExecuter.process(sql);
 					frame.dispose();
 				}

@@ -123,8 +123,8 @@ public class SelectFiles_Manager {
 					System.out.println("enter ManagerWin");
 					String reqPath;
 					if (textField.getText().equals("")) {
-						reqPath = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Requirement";
-						//reqPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Requirement";
+						//reqPath = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Requirement";
+						reqPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Requirement";
 					} else {
 						reqPath = textField.getText();
 					}
