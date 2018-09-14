@@ -124,8 +124,8 @@ public class SelectFiles_Manager {
 					String reqPath;
 					if (textField.getText().equals("")) {
 						//reqPath = "/home/perceptron/workspace/coding/java/req-swing-demo/data/sample/AquaLush_Requirement";
-						//reqPath = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Requirement";
-						reqPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Requirement";
+						reqPath = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Requirement";
+						//reqPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Requirement";
 					} else {
 						reqPath = textField.getText();
 					}

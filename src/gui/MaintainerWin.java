@@ -161,15 +161,16 @@ public class MaintainerWin {
 	private JTextArea textAreaReqText;
 	private JTextArea textAreaMethodContent;
 	private JTable tblUpdateLog;
-	private String[] updateLogColumns;
+	public String[] updateLogColumns;
 	private JLabel lblRecomendMethods;
 	private JLabel lblRequirmentsText;
 	private JLabel lblMethodContent;
 	private JLabel lblUpdateLog;
 	public String logContent;
-	private String reqName;
-	private Object[][] updateLogList;
+	public Object[][] updateLogList;
 	private JButton btnShowLogInfo;
+	private int reqRow;
+	private JScrollPane scrollPaneUpdateLogTable;
 
 	/**
 	 * Launch the application.
@@ -224,9 +225,68 @@ public class MaintainerWin {
 		JPanel panelReqElements = new JPanel();
 		panelReqElements.setBounds(423, 6, 371, 28);
 		frmRequirementsUpdate.getContentPane().add(panelReqElements);
+		panelReqElements.setLayout(null);
 
 		JLabel lblReqElements = new JLabel("Requirement Elements");
+		lblReqElements.setBounds(122, 5, 140, 16);
 		panelReqElements.add(lblReqElements);
+
+		JButton btnRefresh = new JButton("Refresh");
+		btnRefresh.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ArrayList<Object[]> data;
+				data = new ArrayList<Object[]>();
+				int idx = 1;
+				try {
+					String reqName_updateLog = reqElementsList[reqRow][2].toString();
+					Class.forName("org.sqlite.JDBC");
+					Connection c = DriverManager.getConnection("jdbc:sqlite::resource:sql/test.db");
+					c.setAutoCommit(false);
+					Statement stmt = c.createStatement();
+					String sql = "SELECT * FROM logList WHERE id = \'"+reqName_updateLog+"\' ORDER BY date DESC;";
+					System.out.println(sql);
+					ResultSet rs = stmt.executeQuery(sql);
+					while (rs.next()) {
+						data.add(new String[] { idx + "", rs.getString("date"), rs.getString("author"), rs.getString("status"), rs.getString("content")});
+						++idx;
+					}
+				    stmt.close();
+				    c.close();
+				} catch (ClassNotFoundException | SQLException err) {
+					err.printStackTrace();
+				}
+
+				updateLogList = new Object[data.size()][5];
+				for (int i = 0; i < data.size(); ++i) {
+					System.out.println(data.get(i).length);
+					updateLogList[i] = data.get(i);
+				}
+				tblUpdateLog = new JTable(updateLogList, updateLogColumns);
+				tblUpdateLog.addMouseListener(new MouseAdapter() {
+					private int previousSelectedRow = -1;
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						if (e.getButton() == MouseEvent.BUTTON1 && previousSelectedRow != tblUpdateLog.rowAtPoint(e.getPoint())) {
+							// LEFT MOUSE CLICKED
+							int tableRow = tblUpdateLog.rowAtPoint(e.getPoint());
+							previousSelectedRow = tableRow;
+							//System.out.println(updateLogList[tableRow][1]);
+							logContent = updateLogList[tableRow][4].toString();
+							if (logContent.equals(""))
+								btnShowLogInfo.setEnabled(false);
+							else
+								btnShowLogInfo.setEnabled(true);
+							//System.out.println(logContent);
+						}
+					}
+				});
+				System.out.println("23333");
+				scrollPaneUpdateLogTable.setViewportView(tblUpdateLog);
+			}
+		});
+		btnRefresh.setBounds(274, 0, 91, 29);
+		panelReqElements.add(btnRefresh);
 
 		JScrollPane scrollPaneReq = new JScrollPane();
 		scrollPaneReq.setBounds(423, 257, 371, 138);
@@ -249,7 +309,7 @@ public class MaintainerWin {
 		lblUpdateLog = new JLabel("Update Log");
 		panelUpdateLog.add(lblUpdateLog);
 
-		JScrollPane scrollPaneUpdateLogTable = new JScrollPane();
+		scrollPaneUpdateLogTable = new JScrollPane();
 		scrollPaneUpdateLogTable.setBounds(423, 433, 371, 142);
 		frmRequirementsUpdate.getContentPane().add(scrollPaneUpdateLogTable);
 
@@ -276,29 +336,11 @@ public class MaintainerWin {
 			 * modified by YHR
 			 */
 			public void mouseClicked(MouseEvent e) {
-				reqName = lblRequirmentsText.getText().split("for")[1].trim();
+				String reqName = lblRequirmentsText.getText().split("for")[1].trim();
 				UpdateLog pop_upUpdate = new UpdateLog(reqName);
 			}
 		});
 
-		/*btnAddUpdateLog.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				String updateInfo = textAreaUpdateInfo.getText();
-				boolean notEmpty = updateInfo.equals("") ? false : true;
-				new UpdateSaved(notEmpty);
-				if (notEmpty) {
-					String reqName = String.valueOf(tblReqElementsList.getValueAt(row, 2));
-					String sql = "UPDATE reqList SET pending = pending + 1 WHERE id = \'" + reqName + "\';";
-					SqlExecuter.process(sql);
-					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
-					sql = "INSERT INTO logList VALUES(\'" + reqName + "\', \'" + df.format(new Date()) + "\', \'"
-							+ Login.getUserName() + "\', \'" + updateInfo + "\')";
-					SqlExecuter.process(sql);
-				}
-				textAreaUpdateInfo.setText("");
-			}
-		});*/
 		panelSave.setLayout(null);
 		btnAddUpdateLog.setEnabled(false);
 		panelSave.add(btnAddUpdateLog);
@@ -407,6 +449,7 @@ public class MaintainerWin {
 					// LEFT MOUSE CLICKED
 					previousSelectRow = tblReqElementsList.getSelectedRow();
 					int tableRow = tblReqElementsList.getSelectedRow();
+					reqRow = tableRow;
 					boolean isNormal = String.valueOf(tblReqElementsList.getValueAt(tableRow, 3)).equals("Normal");
 					if(!isNormal)
 						btnAddUpdateLog.setEnabled(true);
@@ -414,15 +457,6 @@ public class MaintainerWin {
 						btnAddUpdateLog.setEnabled(false);
 						btnShowLogInfo.setEnabled(false);
 					}
-					/*if (isNormal) {
-						textAreaUpdateInfo.setEditable(false);
-						textAreaUpdateInfo.setText(
-								"Please mark the outdated requirments then you can edit update information here.");
-						btnAddUpdateLog.setEnabled(false);
-					} else {
-						textAreaUpdateInfo.setEditable(true);
-						textAreaUpdateInfo.setText("");
-					}*/
 					String reqName = String.valueOf(tblReqElementsList.getValueAt(tableRow, 2));
 					lblRequirmentsText.setText("Requirements Text for " + reqName); // change title
 					if(isNormal)

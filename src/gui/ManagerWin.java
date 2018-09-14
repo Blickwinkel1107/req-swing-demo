@@ -11,6 +11,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 
 import gui.MaintainerWin;
+import gui.UpdateSaved;
 import sql.SqlExecuter;
 
 import javax.swing.JButton;
@@ -317,6 +318,7 @@ public class ManagerWin {
 				}
 				sql = "UPDATE reqList SET pending = pending - " + cntUnchecked + " WHERE id = \'" + reqName + "\';";
 				SqlExecuter.process(sql);
+				new UpdateSaved(true);
 				updateLogTable.updateUI();
 				try {
 					File root = new File(path_req);
