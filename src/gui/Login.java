@@ -39,7 +39,7 @@ public class Login {
 			}
 		});
 	}
-	
+
 	public static String getUserName() {
 		return userName;
 	}

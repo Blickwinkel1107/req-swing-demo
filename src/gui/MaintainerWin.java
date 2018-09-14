@@ -169,6 +169,7 @@ public class MaintainerWin {
 	public String logContent;
 	private String reqName;
 	private Object[][] updateLogList;
+	private JButton btnShowLogInfo;
 
 	/**
 	 * Launch the application.
@@ -208,37 +209,6 @@ public class MaintainerWin {
 	private void initialize() throws SQLException, ClassNotFoundException {
 
 		frmRequirementsUpdate = new JFrame();
-		frmRequirementsUpdate.getContentPane().addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				ArrayList<Object[]> data;
-				data = new ArrayList<Object[]>();
-				int idx = 1;
-				try {
-					Class.forName("org.sqlite.JDBC");
-					Connection c = DriverManager.getConnection("jdbc:sqlite::resource:sql/test.db");
-					c.setAutoCommit(false);
-					Statement stmt = c.createStatement();
-					String sql = "SELECT * FROM logList WHERE id = \'"+reqName+"\' ORDER BY date DESC;";
-					System.out.println(sql);
-					ResultSet rs = stmt.executeQuery(sql);
-					while (rs.next()) {
-						data.add(new String[] { idx + "", rs.getString("date"), rs.getString("author"), rs.getString("status"), rs.getString("content")});
-						++idx;
-					}
-				    stmt.close();
-				    c.close();
-				} catch (ClassNotFoundException | SQLException err) {
-					err.printStackTrace();
-				}
-
-				updateLogList = new Object[data.size()][5];
-				for (int i = 0; i < data.size(); ++i) {
-					updateLogList[i] = data.get(i);
-				}
-				tblUpdateLog.updateUI();
-			}
-		});
 		frmRequirementsUpdate.setTitle("Requirements update - maintainer");
 		frmRequirementsUpdate.setBounds(100, 100, 836, 663);
 		frmRequirementsUpdate.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -333,7 +303,7 @@ public class MaintainerWin {
 		btnAddUpdateLog.setEnabled(false);
 		panelSave.add(btnAddUpdateLog);
 
-		JButton btnShowLogInfo = new JButton("Show Log Info");
+		btnShowLogInfo = new JButton("Show Log Info");
 		btnShowLogInfo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -438,11 +408,12 @@ public class MaintainerWin {
 					previousSelectRow = tblReqElementsList.getSelectedRow();
 					int tableRow = tblReqElementsList.getSelectedRow();
 					boolean isNormal = String.valueOf(tblReqElementsList.getValueAt(tableRow, 3)).equals("Normal");
-					if(!isNormal){
+					if(!isNormal)
 						btnAddUpdateLog.setEnabled(true);
-					}
-					else
+					else{
 						btnAddUpdateLog.setEnabled(false);
+						btnShowLogInfo.setEnabled(false);
+					}
 					/*if (isNormal) {
 						textAreaUpdateInfo.setEditable(false);
 						textAreaUpdateInfo.setText(

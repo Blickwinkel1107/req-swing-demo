@@ -117,6 +117,8 @@ public class ManagerWin {
 					tableRow = reqElementsTable.rowAtPoint(e.getPoint());
 					if (reqElementsList[tableRow][2].equals("Outdated"))
 						updateReq.setEditable(true);
+					else
+						updateReq.setEditable(false);
 					System.out.println(tableRow);
 					reqName = String.valueOf(reqElementsTable.getValueAt(tableRow, 1));
 					System.out.println(reqName);
@@ -225,6 +227,7 @@ public class ManagerWin {
 		frmRequirementsUpdate.getContentPane().add(scrollPane_2);
 
 		reqText = new JTextArea();
+		reqText.setEditable(false);
 		reqText.setFont(new Font("Arial", Font.PLAIN, 13));
 		reqText.setLineWrap(true);
 		reqText.setWrapStyleWord(true);
@@ -301,12 +304,19 @@ public class ManagerWin {
 				String sql = "UPDATE reqList SET status = 'Normal' WHERE id = \'" + reqName + "\';";
 				SqlExecuter.process(sql);
 				reqElementsList[tableRow][2] = "Normal";
+				int newPending = ((int)reqElementsList[tableRow][3] - 1);
+				reqElementsList[tableRow][3] = String.valueOf(newPending);
 				reqElementsTable.updateUI();
-				String sql_log = "UPDATE logList SET status = 'Checked' WHERE id = \'" + reqName + "\';";
-				SqlExecuter.process(sql_log);
+				sql = "UPDATE logList SET status = 'Checked' WHERE id = \'" + reqName + "\';";
+				SqlExecuter.process(sql);
+				int cntUnchecked = 0;
 				for (int i = 0; i < updateLogList.length; i++){
+					if(!updateLogList[i][3].equals("Checked"))
+						++cntUnchecked;
 					updateLogList[i][3] = "Checked";
 				}
+				sql = "UPDATE reqList SET pending = pending - " + cntUnchecked + " WHERE id = \'" + reqName + "\';";
+				SqlExecuter.process(sql);
 				updateLogTable.updateUI();
 				try {
 					File root = new File(path_req);
