@@ -167,6 +167,8 @@ public class MaintainerWin {
 	private JLabel lblMethodContent;
 	private JLabel lblUpdateLog;
 	public String logContent;
+	private String reqName;
+	private Object[][] updateLogList;
 
 	/**
 	 * Launch the application.
@@ -206,6 +208,37 @@ public class MaintainerWin {
 	private void initialize() throws SQLException, ClassNotFoundException {
 
 		frmRequirementsUpdate = new JFrame();
+		frmRequirementsUpdate.getContentPane().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				ArrayList<Object[]> data;
+				data = new ArrayList<Object[]>();
+				int idx = 1;
+				try {
+					Class.forName("org.sqlite.JDBC");
+					Connection c = DriverManager.getConnection("jdbc:sqlite::resource:sql/test.db");
+					c.setAutoCommit(false);
+					Statement stmt = c.createStatement();
+					String sql = "SELECT * FROM logList WHERE id = \'"+reqName+"\' ORDER BY date DESC;";
+					System.out.println(sql);
+					ResultSet rs = stmt.executeQuery(sql);
+					while (rs.next()) {
+						data.add(new String[] { idx + "", rs.getString("date"), rs.getString("author"), rs.getString("status"), rs.getString("content")});
+						++idx;
+					}
+				    stmt.close();
+				    c.close();
+				} catch (ClassNotFoundException | SQLException err) {
+					err.printStackTrace();
+				}
+
+				updateLogList = new Object[data.size()][5];
+				for (int i = 0; i < data.size(); ++i) {
+					updateLogList[i] = data.get(i);
+				}
+				tblUpdateLog.updateUI();
+			}
+		});
 		frmRequirementsUpdate.setTitle("Requirements update - maintainer");
 		frmRequirementsUpdate.setBounds(100, 100, 836, 663);
 		frmRequirementsUpdate.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -273,7 +306,7 @@ public class MaintainerWin {
 			 * modified by YHR
 			 */
 			public void mouseClicked(MouseEvent e) {
-				String reqName = lblRequirmentsText.getText().split("for")[1].trim();
+				reqName = lblRequirmentsText.getText().split("for")[1].trim();
 				UpdateLog pop_upUpdate = new UpdateLog(reqName);
 			}
 		});
@@ -394,7 +427,6 @@ public class MaintainerWin {
 		tblReqElementsList = new JTable(reqElementsList, reqColumn);
 		tblReqElementsList.addMouseListener(new MouseAdapter() {
 			private int previousSelectRow = -1;
-			private Object[][] updateLogList;
 
 			/*
 			 * modified by YHR 表格接收鼠标左�?�右键点击事�?
