@@ -44,7 +44,7 @@ public class SelectFiles_Manager {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
         if(e.getSource().getClass().equals(JMenuItem.class)){
         	mnSelectExistingProjects.setText("����");
@@ -123,8 +123,8 @@ public class SelectFiles_Manager {
 					System.out.println("enter ManagerWin");
 					String reqPath;
 					if (textField.getText().equals("")) {
-						//reqPath = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Requirement";
-						reqPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Requirement";
+						reqPath = "/Users/mac/Desktop/interfaceDemo/data/sample/AquaLush_Requirement";
+						//reqPath = "E:\\Desktop\\Class\\Coding\\Java\\req-swing-demo\\data\\sample\\AquaLush_Requirement";
 					} else {
 						reqPath = textField.getText();
 					}
@@ -143,23 +143,23 @@ public class SelectFiles_Manager {
 			}
 		});
 		panel_1.add(btnConfirm);
-		
+
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBounds(22, 76, 89, 25);
 		frmSelectFiles.getContentPane().add(menuBar);
-		
+
 		mnSelectExistingProjects = new JMenu("Project name");
 		menuBar.add(mnSelectExistingProjects);
-		
+
 		JMenuItem mntmAqualush = new JMenuItem("Aqualush");
 		mnSelectExistingProjects.add(mntmAqualush);
-		
+
 		JMenuItem mntmItrust = new JMenuItem("iTrust");
 		mnSelectExistingProjects.add(mntmItrust);
-		
+
 		JMenuItem mntmConnect = new JMenuItem("Connect");
 		mnSelectExistingProjects.add(mntmConnect);
-		
+
 		for(int i = 0; i < mnSelectExistingProjects.getMenuComponentCount(); ++i) {
 			JMenuItem item = mnSelectExistingProjects.getItem(i);
 			item.addActionListener(new java.awt.event.ActionListener() {
@@ -168,11 +168,11 @@ public class SelectFiles_Manager {
 				}
 			});
 		}
-		
+
 		JLabel lblNewLabel = new JLabel("... or enter requirement path below");
 		lblNewLabel.setBounds(22, 113, 221, 29);
 		frmSelectFiles.getContentPane().add(lblNewLabel);
-		
+
 		JLabel lblSelectExistingProject = new JLabel("Select existing project");
 		lblSelectExistingProject.setBounds(22, 35, 165, 29);
 		frmSelectFiles.getContentPane().add(lblSelectExistingProject);

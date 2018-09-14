@@ -52,6 +52,8 @@ public class ManagerWin {
 	private JTextArea updateReq;
 	private String reqName;
 	private int tableRow;
+	private ArrayList<Object[]> data;
+	private Object[][] updateLogList;
 	/**
 	 * Create the application.
 	 * @throws SQLException
@@ -85,7 +87,6 @@ public class ManagerWin {
 		scrollPane.setBounds(6, 30, 369, 180);
 		frmRequirementsUpdate.getContentPane().add(scrollPane);
 
-		ArrayList<Object[]> data;
 		data = new ArrayList<Object[]>();
 		reqColumns = new String[]{ "No", "Id", "Status", "Pending"};
 		data = new ArrayList<Object[]>();
@@ -108,7 +109,6 @@ public class ManagerWin {
 		reqElementsTable = new JTable(reqElementsList, reqColumns);
 		reqElementsTable.addMouseListener(new MouseAdapter() {
 			private int previewSelectedRow = -1;
-			private Object[][] updateLogList;
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1 && previewSelectedRow != reqElementsTable.rowAtPoint(e.getPoint())){
@@ -148,7 +148,7 @@ public class ManagerWin {
 						System.out.println(sql);
 						ResultSet rs = stmt.executeQuery(sql);
 						while (rs.next()) {
-							data.add(new String[] { idx + "", rs.getString("date"), rs.getString("author"), rs.getString("content")});
+							data.add(new String[] { idx + "", rs.getString("date"), rs.getString("author"), rs.getString("status"), rs.getString("content")});
 							++idx;
 						}
 					    stmt.close();
@@ -171,7 +171,7 @@ public class ManagerWin {
 								int tableRow = updateLogTable.rowAtPoint(e.getPoint());
 								previousSelectedRow = tableRow;
 								System.out.println(updateLogList[tableRow][1]);
-								String logContent = updateLogList[tableRow][3].toString();
+								String logContent = updateLogList[tableRow][4].toString();
 								textAreaUpdateInfo.setText(logContent);
 							}
 						}
@@ -195,7 +195,7 @@ public class ManagerWin {
 		scrollPaneUpdateLogTable.setBounds(424, 30, 370, 180);
 		frmRequirementsUpdate.getContentPane().add(scrollPaneUpdateLogTable);
 
-		updateLogTableColumn = new String[]{ "No", "Date", "Author"};
+		updateLogTableColumn = new String[]{ "No", "Date", "Author", "Status"};
 		updateLogTable = new JTable(new Object[][] {}, updateLogTableColumn);
 		updateLogTable.addMouseListener(new MouseAdapter() {
 			private int previousSelectedRow = -1;
@@ -300,6 +300,12 @@ public class ManagerWin {
 				SqlExecuter.process(sql);
 				reqElementsList[tableRow][2] = "Outdated";
 				reqElementsTable.updateUI();
+				String sql_log = "UPDATE logList SET status = 'Checked' WHERE id = \'" + reqName + "\';";
+				SqlExecuter.process(sql_log);
+				for (int i = 0; i < updateLogList.length; i++){
+					updateLogList[i][3] = "Checked";
+				}
+				updateLogTable.updateUI();
 				try {
 					File root = new File(path_req);
 					String originReqPath = root.getParentFile().getAbsolutePath() + "/AquaLush_Requirement_Origin/";
