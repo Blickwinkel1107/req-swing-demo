@@ -113,8 +113,10 @@ public class ManagerWin {
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1 && previewSelectedRow != reqElementsTable.rowAtPoint(e.getPoint())){
 					//LEFT MOUSE CLICKED
-					updateReq.setEditable(true);
+					//updateReq.setEditable(true);
 					tableRow = reqElementsTable.rowAtPoint(e.getPoint());
+					if (reqElementsList[tableRow][2].equals("Outdated"))
+						updateReq.setEditable(true);
 					System.out.println(tableRow);
 					reqName = String.valueOf(reqElementsTable.getValueAt(tableRow, 1));
 					System.out.println(reqName);
@@ -298,7 +300,7 @@ public class ManagerWin {
 			        }
 				String sql = "UPDATE reqList SET status = 'Normal' WHERE id = \'" + reqName + "\';";
 				SqlExecuter.process(sql);
-				reqElementsList[tableRow][2] = "Outdated";
+				reqElementsList[tableRow][2] = "Normal";
 				reqElementsTable.updateUI();
 				String sql_log = "UPDATE logList SET status = 'Checked' WHERE id = \'" + reqName + "\';";
 				SqlExecuter.process(sql_log);

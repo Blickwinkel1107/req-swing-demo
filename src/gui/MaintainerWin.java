@@ -273,7 +273,7 @@ public class MaintainerWin {
 			 * modified by YHR
 			 */
 			public void mouseClicked(MouseEvent e) {
-				String reqName = lblUpdateLog.getText().split("for")[1].trim();
+				String reqName = lblRequirmentsText.getText().split("for")[1].trim();
 				UpdateLog pop_upUpdate = new UpdateLog(reqName);
 			}
 		});
