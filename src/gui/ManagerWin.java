@@ -304,7 +304,7 @@ public class ManagerWin {
 				String sql = "UPDATE reqList SET status = 'Normal' WHERE id = \'" + reqName + "\';";
 				SqlExecuter.process(sql);
 				reqElementsList[tableRow][2] = "Normal";
-				int newPending = ((int)reqElementsList[tableRow][3] - 1);
+				int newPending = (Integer.parseInt((String) reqElementsList[tableRow][3]) - 1);
 				reqElementsList[tableRow][3] = String.valueOf(newPending);
 				reqElementsTable.updateUI();
 				sql = "UPDATE logList SET status = 'Checked' WHERE id = \'" + reqName + "\';";
@@ -336,6 +336,8 @@ public class ManagerWin {
 					e1.printStackTrace();
 				}
 				updateReq.setText("");
+				updateReq.setEditable(false);
+				btnSave.setEnabled(false);
 			}
 		});
 		btnSave.setEnabled(false);
