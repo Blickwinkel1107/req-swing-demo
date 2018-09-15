@@ -304,10 +304,6 @@ public class ManagerWin {
 			        }
 				String sql = "UPDATE reqList SET status = 'Normal' WHERE id = \'" + reqName + "\';";
 				SqlExecuter.process(sql);
-				reqElementsList[tableRow][2] = "Normal";
-				int newPending = (Integer.parseInt((String) reqElementsList[tableRow][3]) - 1);
-				reqElementsList[tableRow][3] = String.valueOf(newPending);
-				reqElementsTable.updateUI();
 				sql = "UPDATE logList SET status = 'Checked' WHERE id = \'" + reqName + "\';";
 				SqlExecuter.process(sql);
 				int cntUnchecked = 0;
@@ -317,6 +313,11 @@ public class ManagerWin {
 					updateLogList[i][3] = "Checked";
 				}
 				sql = "UPDATE reqList SET pending = pending - " + cntUnchecked + " WHERE id = \'" + reqName + "\';";
+				reqElementsList[tableRow][2] = "Normal";
+				int newPending = (Integer.parseInt((String) reqElementsList[tableRow][3]) - cntUnchecked);
+				reqElementsList[tableRow][3] = String.valueOf(newPending);
+				reqElementsTable.updateUI();
+				System.out.println(sql);
 				SqlExecuter.process(sql);
 				new UpdateSaved(true);
 				updateLogTable.updateUI();
